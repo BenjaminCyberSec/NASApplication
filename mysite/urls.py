@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -13,6 +13,9 @@ urlpatterns = [
     path('files/<int:pk>/', views.delete_file, name='delete_file'),
 
     path('admin/', admin.site.urls),
+
+    re_path(r"^fetch/(?P<path>.+)",views.MyFetchView,name='FETCH_URL_NAME')
+
 ]
 
 if settings.DEBUG:
