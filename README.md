@@ -5,7 +5,7 @@
 First, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/BenjaminCyberSec/NASApplication
+git clone https://github.com/niweiwang/NASApplication
 ```
 
 Install the requirements:
