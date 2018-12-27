@@ -111,8 +111,9 @@ def MyFetchView(request, *args, **kwargs):
 
         with open(path, "rb") as f:
             content = f.read()
-
-    content = Cryptographer.decrypted(content)
+    password = bytes("password", 'utf-8')
+    salt = bytes("salt", 'utf-8')
+    content = Cryptographer.decrypted(content,salt,password)
     return HttpResponse(content, content_type= mimetypes.guess_type(path, strict=True)[0] )
 
     

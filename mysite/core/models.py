@@ -20,18 +20,22 @@ except ImportError:
 ###### custom wrapper of FieldFile #######
 
 class EncryptedFile(BytesIO):
-    def __init__(self, content):
+    def __init__(self, content,password,salt):
         self.size = content.size
-        BytesIO.__init__(self, Cryptographer.encrypted(content.file.read()))
+        BytesIO.__init__(self, Cryptographer.encrypted(content.file.read(),salt,password))
+
+
 
 
 class EncryptionMixin(object):
 
     def save(self, name, content, save=True):
+        password = bytes("password", 'utf-8')
+        salt = bytes("salt", 'utf-8')
         return FieldFile.save(
             self,
             name,
-            EncryptedFile(content),
+            EncryptedFile(content,password,salt),
             save=save
         )
     save.alters_data = True

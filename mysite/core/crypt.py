@@ -10,18 +10,26 @@ from .constants import SALT, PASSWORD
 
 class Cryptographer(object):
 
-    _fernet = Fernet(base64.urlsafe_b64encode(PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
-        length=32,
-        salt=SALT,
-        iterations=100000,
-        backend=default_backend()
-    ).derive(PASSWORD)))
+    @classmethod
+    def encrypted(cls, content,salt, password):
+        fernet = Fernet(base64.urlsafe_b64encode(PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=salt,
+            iterations=100000,
+            backend=default_backend()
+        ).derive(password)))
+        return fernet.encrypt(content)
 
     @classmethod
-    def encrypted(cls, content):
-        return cls._fernet.encrypt(content)
+    def decrypted(cls, content,salt, password):
+        fernet = Fernet(base64.urlsafe_b64encode(PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=salt,
+            iterations=100000,
+            backend=default_backend()
+        ).derive(password)))
+        return fernet.decrypt(content)
 
-    @classmethod
-    def decrypted(cls, content):
-        return cls._fernet.decrypt(content)
+    
