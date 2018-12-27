@@ -15,7 +15,7 @@ pip install -r requirements.txt
 ```
 
 ```bash
-cd example
+cd NASApplication/example
 ```
 
 Apply the migrations:
