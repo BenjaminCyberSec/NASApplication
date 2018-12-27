@@ -42,10 +42,11 @@ def upload_file(request):
     if request.method == 'POST':
         form = FileForm(request.POST, request.FILES)
         if form.is_valid():
-            password= Cryptographer.derive(form.cleaned_data['password'])
             data = form.cleaned_data['file']
             user= request.user.id
             
+            password= Cryptographer.derive(form.cleaned_data['password'])
+            request.session['key'] = password.decode("utf-8")
             Cryptographer.addUser(user,password) #move to connection or something #put in session?
             Cryptographer.addFile(user, data.name)
 
@@ -162,9 +163,16 @@ def MyFetchView(request, *args, **kwargs):
         with open(path, "rb") as f:
             content = f.read()
     
-    #only the user that uploaded it can download it
-    user= request.user.id
-    password = Cryptographer.getKey(user)
+    #only the user that uploaded it can download it if he goes really fast :p
+    #user= request.user.id
+    #password = Cryptographer.getKey(user)
+
+    #stored in session, needs to be secured
+    if not 'key' in request.session:
+        raise Http404
+    password =  bytes(request.session['key'], 'utf-8')
+    
+    
 
     salt = bytes("salt", 'utf-8')
     content = Cryptographer.decrypted(content,salt,password)
