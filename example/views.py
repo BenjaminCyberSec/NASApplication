@@ -53,7 +53,7 @@ def upload_file(request):
             size = data.size/1000,
             modification_date = datetime.datetime.now(),
             file = data,
-            user = User.objects.get(user)).save()
+            user = User.objects.get(id=user)).save()
             return redirect('file_list')
     else:
         form = FileForm()
@@ -124,8 +124,15 @@ def MyFetchView(request, *args, **kwargs):
             return False
 
     path = kwargs.get("path")
-    result = File.objects.files.urls #.filter(url=path)[0]
-    print(result)
+
+    #keep for right verification, might be needed
+    #result = File.objects.all().files.urls#.filter(url=path)[0]
+    #result = File.objects.raw('SELECT eu.id FROM example_user eu, example_files ef where eu.file = ef.id and ef.url = \"'+path+'\"')
+    #result = User.objects.raw('SELECT * FROM auth_user u')[0]
+    #result = File.objects.raw('SELECT * FROM example_file f ')[0]
+    #print(result.file)
+
+    
 
     
     # No path?  You're boned.  Move along.
@@ -155,7 +162,10 @@ def MyFetchView(request, *args, **kwargs):
         with open(path, "rb") as f:
             content = f.read()
     
-    password = bytes("password", 'utf-8')
+    #only the user that uploaded it can download it
+    user= request.user.id
+    password = Cryptographer.getKey(user)
+
     salt = bytes("salt", 'utf-8')
     content = Cryptographer.decrypted(content,salt,password)
     return HttpResponse(content, content_type= mimetypes.guess_type(path, strict=True)[0] )

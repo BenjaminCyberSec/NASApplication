@@ -24,8 +24,8 @@ class Cryptographer(object):
     ).derive(password)))
 
     #dictionaries that store entries for a limited amount of time
-    _user_cache = ExpiringDict(max_len=500, max_age_seconds=300) #user : key
-    _file_cache = ExpiringDict(max_len=1000, max_age_seconds=300) #file : user
+    _user_cache = ExpiringDict(max_len=500, max_age_seconds=900) #user : key
+    _file_cache = ExpiringDict(max_len=1000, max_age_seconds=900) #file : user
 
     @classmethod
     def addUser(cls,user,key):
