@@ -22,7 +22,7 @@ Apply the migrations:
 
 ```bash
 
-python manage.py migrate
+python manage.py migrate --run-syncdb
 ```
 
 Finally, run the development server:
