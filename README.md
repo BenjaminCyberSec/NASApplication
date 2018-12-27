@@ -20,8 +20,10 @@ cd NASApplication/example
 
 Apply the migrations:
 
-```bash
 
+
+```bash
+find . -name \*.pyc -delete
 python manage.py migrate --run-syncdb
 ```
 
