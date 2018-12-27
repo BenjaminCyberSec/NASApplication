@@ -14,9 +14,14 @@ Install the requirements:
 pip install -r requirements.txt
 ```
 
+```bash
+cd example
+```
+
 Apply the migrations:
 
 ```bash
+
 python manage.py migrate
 ```
 
