@@ -5,10 +5,52 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-from .constants import SALT, PASSWORD
+from expiringdict import ExpiringDict
+
+
 
 
 class Cryptographer(object):
+    backend = default_backend()
+    salt = bytes("salt", "utf-8") #put in environement
+    password = bytes("pasword","utf-8")
+
+    mapEncryption  = Fernet(base64.urlsafe_b64encode(PBKDF2HMAC( #change for a thing not decryptable
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+        backend=default_backend()
+    ).derive(password)))
+
+    #dictionaries that store entries for a limited amount of time
+    _user_cache = ExpiringDict(max_len=500, max_age_seconds=300) #user : key
+    _file_cache = ExpiringDict(max_len=1000, max_age_seconds=300) #file : user
+
+    @classmethod
+    def addUser(cls,user,key):
+        cls._user_cache[user] = key
+        
+    @classmethod
+    def getKey(cls,user):
+        return cls._user_cache[user]
+
+    @classmethod
+    def addFile(cls,user,file):
+        cls._file_cache[file] = user
+        
+    @classmethod
+    def getUser(cls,file):
+        print(cls._file_cache)
+        return cls._file_cache[file]
+
+    @classmethod
+    def derive(cls,message):
+        return cls.mapEncryption.encrypt(bytes(message, "utf8"))
+    @classmethod
+    def verify(cls,signature,key):
+        return cls.mapEncryption.decrypt(bytes(signature, "utf8"),key)
+
 
     @classmethod
     def encrypted(cls, content,salt, password):

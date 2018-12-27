@@ -27,6 +27,8 @@ from django.core.validators import URLValidator, ValidationError
 from django.http import Http404, HttpResponse
 from django.views.generic import View
 import requests
+from django.contrib.auth.models import User
+
 
 @otp_required
 def file_list(request):
@@ -40,11 +42,18 @@ def upload_file(request):
     if request.method == 'POST':
         form = FileForm(request.POST, request.FILES)
         if form.is_valid():
+            password= Cryptographer.derive(form.cleaned_data['password'])
             data = form.cleaned_data['file']
+            user= request.user.id
+            
+            Cryptographer.addUser(user,password) #move to connection or something #put in session?
+            Cryptographer.addFile(user, data.name)
+
             File(name =  data.name,
             size = data.size/1000,
             modification_date = datetime.datetime.now(),
-            file = data).save()
+            file = data,
+            user = User.objects.get(user)).save()
             return redirect('file_list')
     else:
         form = FileForm()
@@ -115,6 +124,8 @@ def MyFetchView(request, *args, **kwargs):
             return False
 
     path = kwargs.get("path")
+    result = File.objects.files.urls #.filter(url=path)[0]
+    print(result)
 
     
     # No path?  You're boned.  Move along.
@@ -143,6 +154,7 @@ def MyFetchView(request, *args, **kwargs):
 
         with open(path, "rb") as f:
             content = f.read()
+    
     password = bytes("password", 'utf-8')
     salt = bytes("salt", 'utf-8')
     content = Cryptographer.decrypted(content,salt,password)

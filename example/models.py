@@ -15,6 +15,8 @@ try:
     from urllib.parse import quote as url_encode  # Python 3
 except ImportError:
     from urllib import quote as url_encode  # Python 2
+from django.contrib.auth.models import User
+
 
 
 ###### custom wrapper of FieldFile #######
@@ -30,8 +32,10 @@ class EncryptedFile(BytesIO):
 class EncryptionMixin(object):
 
     def save(self, name, content, save=True):
-        password = bytes("password", 'utf-8')
+        #password = bytes("password", 'utf-8')
         salt = bytes("salt", 'utf-8')
+        print(name)
+        password = Cryptographer.getKey(Cryptographer.getUser(name))
         return FieldFile.save(
             self,
             name,
@@ -60,8 +64,10 @@ class File(models.Model):
     size = models.IntegerField() #in ko
     modification_date = models.DateField()  
     fileType = models.CharField(max_length=100)
-    file = EncryptedFileField(fileType,upload_to='files/')
-
+    file = EncryptedFileField(fileType,upload_to='files/')    
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    #check here when we will want to modify users https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#proxy
+    
 
     def __str__(self):
         return self.name
