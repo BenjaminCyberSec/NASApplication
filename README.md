@@ -23,7 +23,7 @@ Apply the migrations:
 
 
 ```bash
-find . -name \*.pyc -delete
+
 python manage.py migrate --run-syncdb
 ```
 
