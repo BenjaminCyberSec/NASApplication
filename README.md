@@ -5,7 +5,7 @@
 First, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/BenjaminCyberSec/NASApplication
+git clone https://github.com/niweiwang/NASApplication
 ```
 
 Install the requirements:
@@ -14,10 +14,17 @@ Install the requirements:
 pip install -r requirements.txt
 ```
 
+```bash
+cd NASApplication/example
+```
+
 Apply the migrations:
 
+
+
 ```bash
-python manage.py migrate
+
+python manage.py migrate --run-syncdb
 ```
 
 Finally, run the development server:
