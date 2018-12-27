@@ -40,11 +40,12 @@ def upload_file(request):
     if request.method == 'POST':
         form = FileForm(request.POST, request.FILES)
         if form.is_valid():
-            data = form.cleaned_data['file']
-            File(name =  data.name,
-            size = data.size/1000,
-            modification_date = datetime.datetime.now(),
-            file = data).save()
+            for f in request.FILES.getlist('file_field'):
+                data = f
+                File(name =  data.name,
+                size = data.size/1000,
+                modification_date = datetime.datetime.now(),
+                file = data).save()
             return redirect('file_list')
     else:
         form = FileForm()
