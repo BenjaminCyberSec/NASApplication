@@ -32,6 +32,9 @@ from django.contrib.auth.models import User
 
 @otp_required
 def file_list(request):
+    #for key, value in request.session.items(): <- affiche variable de session
+    #    print('{} => {}'.format(key, value))
+
     files = File.objects.all()
     return render(request, 'file_list.html', {
         'files': files
@@ -46,8 +49,8 @@ def upload_file(request):
             user= request.user.id
             
             password= Cryptographer.derive(form.cleaned_data['password'])
-            request.session['key'] = password.decode("utf-8")
-            Cryptographer.addUser(user,password) #move to connection or something #put in session?
+            request.session['key'] = password.decode("utf-8") #move to connection
+            Cryptographer.addUser(user,password) #move to connection 
             Cryptographer.addFile(user, data.name)
 
             File(name =  data.name,
