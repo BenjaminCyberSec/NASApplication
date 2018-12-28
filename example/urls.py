@@ -8,7 +8,7 @@ from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from two_factor.urls import urlpatterns as tf_urls
 from .views import file_list, upload_file, delete_file
 from .views import (
-    ExampleSecretView, HomeView, RegistrationCompleteView, RegistrationView,MyFetchView,
+    ExampleSecretView, HomeView, RegistrationCompleteView, RegistrationView,MyFetchView,EncryptionKey,
 )
 
 
@@ -18,6 +18,8 @@ urlpatterns = [
     path('files/upload/', upload_file, name='upload_file'),
     path('files/<int:pk>/', delete_file, name='delete_file'),
     re_path(r"^fetch/(?P<path>.+)",MyFetchView,name='FETCH_URL_NAME'),
+
+    path('encryptionkey/', EncryptionKey, name='encryption_key'),
 
     url(
         regex=r'^$',

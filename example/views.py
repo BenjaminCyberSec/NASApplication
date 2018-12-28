@@ -7,13 +7,13 @@ from django.views.generic import FormView, TemplateView, ListView, CreateView
 from two_factor.views import OTPRequiredMixin
 from two_factor.views.utils import class_view_decorator
 
-#from django.shortcuts import render, redirect
-#from django.views.generic import TemplateView, ListView, CreateView
+
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse_lazy
 from django_otp.decorators import otp_required
+from decorators import key_required
 
-from .forms import FileForm
+from .forms import FileForm,KeyForm
 from .models import File
 
 from .crypt import Cryptographer
@@ -32,25 +32,18 @@ from django.contrib.auth.models import User
 
 @otp_required
 def file_list(request):
-    #for key, value in request.session.items(): <- affiche variable de session
-    #    print('{} => {}'.format(key, value))
-
     files = File.objects.all()
     return render(request, 'file_list.html', {
         'files': files
     })
 
 @otp_required
+@key_required
 def upload_file(request):
     if request.method == 'POST':
         form = FileForm(request.POST, request.FILES)
         if form.is_valid():
             user= request.user.id
-            password= Cryptographer.derive(form.cleaned_data['password'])
-            #(Django stores data on the server side and abstracts the sending and receiving of cookies. The content of what the user actually gets is only the session_id.)
-            request.session['key'] = password#.decode("utf-8") #move to connection
-            Cryptographer.addUser(user,password) #move to connection 
-            
             for f in request.FILES.getlist('file_field'):
                 data =f
                 Cryptographer.addFile(user, data.name)
@@ -102,6 +95,27 @@ class RegistrationCompleteView(TemplateView):
 class ExampleSecretView(OTPRequiredMixin, TemplateView):
     template_name = 'secret.html'
 
+
+@otp_required
+def EncryptionKey(request, *args, **kwargs):
+    if request.method == 'POST':
+        form = KeyForm(request.POST, request.FILES)
+        if form.is_valid():
+            user= request.user.id
+            password= Cryptographer.derive(form.cleaned_data['password'])
+            #(Django stores data on the server side and abstracts the sending and receiving of cookies. The content of what the user actually gets is only the session_id.)
+            request.session['key'] = password#.decode("utf-8") #move to connection
+            Cryptographer.addUser(user,password) #move to connection 
+            return redirect('file_list')
+
+    else:
+        form = KeyForm()
+    return render(request, 'upload_file.html', {
+        'form': form
+    })
+
+@otp_required
+@key_required
 def MyFetchView(request, *args, **kwargs):
     """
     Limit user access to this view has to be added,
