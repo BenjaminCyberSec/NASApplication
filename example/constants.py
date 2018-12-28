@@ -3,9 +3,9 @@ from django.conf import settings
 from django.utils import six
 
 
-#def _get_setting(name):
-#    setting_name = "DEFF_{}".format(name)
-#    return os.getenv(setting_name, getattr(settings, setting_name, None))
+def _get_setting(name):
+    setting_name = "DEFF_{}".format(name)
+    return os.getenv(setting_name, getattr(settings, setting_name, None))
 
 
 def get_bytes(v):
@@ -17,15 +17,13 @@ def get_bytes(v):
         return v
 
     raise TypeError(
-        "SALT & PASSWORD must be specified as strings that convert nicely to "
-        "bytes."
+        "KEY_SALT & FILE_SALT must be specified as strings that convert nicely to "
+        "bytes (in the environnement -> export DEFF_KEY_SALT=\"salt\")."
     )
 
 
-SALT = get_bytes("SALT")
-PASSWORD = get_bytes("PASSWORD")
-FETCH_URL_NAME = 'FETCH_URL_NAME'
+FILE_SALT = get_bytes(_get_setting("FILE_SALT")) 
+KEY_SALT = get_bytes(_get_setting("KEY_SALT")) 
 
-#SALT = get_bytes(_get_setting("SALT"))
-#PASSWORD = get_bytes(_get_setting("PASSWORD"))
-#FETCH_URL_NAME = _get_setting("FETCH_URL_NAME")
+
+

@@ -176,8 +176,5 @@ def MyFetchView(request, *args, **kwargs):
         raise Http404
     password =  bytes(request.session['key'], 'utf-8')
     
-    
-
-    salt = bytes("salt", 'utf-8')
-    content = Cryptographer.decrypted(content,salt,password)
+    content = Cryptographer.decrypted(content,password)
     return HttpResponse(content, content_type= mimetypes.guess_type(path, strict=True)[0] )

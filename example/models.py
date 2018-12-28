@@ -9,7 +9,7 @@ try:
     from django.urls import reverse
 except ImportError:  # Django < 2.0 # pragma: no cover
     from django.core.urlresolvers import reverse
-from .constants import FETCH_URL_NAME
+#from .constants import FETCH_URL_NAME
 from .crypt import Cryptographer
 try:
     from urllib.parse import quote as url_encode  # Python 3
@@ -22,9 +22,9 @@ from django.contrib.auth.models import User
 ###### custom wrapper of FieldFile #######
 
 class EncryptedFile(BytesIO):
-    def __init__(self, content,password,salt):
+    def __init__(self, content,password):
         self.size = content.size
-        BytesIO.__init__(self, Cryptographer.encrypted(content.file.read(),salt,password))
+        BytesIO.__init__(self, Cryptographer.encrypted(content.file.read(),password))
 
 
 
@@ -32,18 +32,17 @@ class EncryptedFile(BytesIO):
 class EncryptionMixin(object):
 
     def save(self, name, content, save=True):
-        salt = bytes("salt", 'utf-8')
         password = Cryptographer.getKey(Cryptographer.getUser(name))
         return FieldFile.save(
             self,
             name,
-            EncryptedFile(content,bytes(password, "utf8"),salt),
+            EncryptedFile(content,bytes(password, "utf8")),
             save=save
         )
     save.alters_data = True
 
     def _get_url(self):
-        return reverse(FETCH_URL_NAME, kwargs={
+        return reverse('FETCH_URL_NAME', kwargs={
             "path": super(EncryptionMixin, self).url
         })
     url = property(_get_url)
