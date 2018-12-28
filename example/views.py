@@ -45,19 +45,21 @@ def upload_file(request):
     if request.method == 'POST':
         form = FileForm(request.POST, request.FILES)
         if form.is_valid():
-            data = form.cleaned_data['file']
             user= request.user.id
             
             password= Cryptographer.derive(form.cleaned_data['password'])
             request.session['key'] = password.decode("utf-8") #move to connection
             Cryptographer.addUser(user,password) #move to connection 
-            Cryptographer.addFile(user, data.name)
+            
+            for f in request.FILES.getlist('file_field'):
+                data =f
+                Cryptographer.addFile(user, data.name)
 
-            File(name =  data.name,
-            size = data.size/1000,
-            modification_date = datetime.datetime.now(),
-            file = data,
-            user = User.objects.get(id=user)).save()
+                File(name =  data.name,
+                size = data.size/1000,
+                modification_date = datetime.datetime.now(),
+                file = data,
+                user = User.objects.get(id=user)).save()
             return redirect('file_list')
     else:
         form = FileForm()
