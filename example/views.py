@@ -47,6 +47,7 @@ def upload_file(request):
         if form.is_valid():
             user= request.user.id
             password= Cryptographer.derive(form.cleaned_data['password'])
+            #(Django stores data on the server side and abstracts the sending and receiving of cookies. The content of what the user actually gets is only the session_id.)
             request.session['key'] = password#.decode("utf-8") #move to connection
             Cryptographer.addUser(user,password) #move to connection 
             
@@ -103,21 +104,8 @@ class ExampleSecretView(OTPRequiredMixin, TemplateView):
 
 def MyFetchView(request, *args, **kwargs):
     """
-    This is a generic, insecure view that effectively undoes any security made
-    available via this module.  To make it useful, you have to subclass it and
-    make use of your own rules or simply rely on the auth mixins provided by
-    Django:
-      from django.contrib.auth.mixins import LoginRequiredMixin
-      from django_encrypted_fields.views import FetchView as BaseFetchView
-      class FetchView(LoginRequiredMixin, BaseFetchView):
-          pass
-    Using LoginRequiredMixin would effectively allow anyone with a site login
-    to view *all* files, while using something like StaffRequiredMixin would
-    mean that only staff members could read the file.
-    Theoretically you could also write your view to be smart enough to take the
-    requested path and match it against a list of permissions, allowing you to
-    set out per-user permissions whilst still only using one encryption key for
-    the whole site.
+    Limit user access to this view has to be added,
+    check if they own the files
     """
 
     
@@ -137,14 +125,10 @@ def MyFetchView(request, *args, **kwargs):
     #result = File.objects.raw('SELECT * FROM example_file f ')[0]
     #print(result.file)
 
-    
-
-    
-    # No path?  You're boned.  Move along.
     if not path:
         raise Http404
     else:
-        path ='http://127.0.0.1:8000' + path #to put in dev only
+        path ='http://127.0.0.1:8000' + path #when we stock this on the same machine
 
     if is_url(path):
 
@@ -166,12 +150,9 @@ def MyFetchView(request, *args, **kwargs):
 
         with open(path, "rb") as f:
             content = f.read()
-    
-    #only the user that uploaded it can download it if he goes really fast :p
-    #user= request.user.id
-    #password = Cryptographer.getKey(user)
 
-    #stored in session, needs to be secured
+    #stored in django-session (In django stores data on the server side and abstracts the sending 
+    # and receiving of cookies. The content of what the user actually gets is only the session_id.)
     if not 'key' in request.session:
         raise Http404
     password =  bytes(request.session['key'], 'utf-8')

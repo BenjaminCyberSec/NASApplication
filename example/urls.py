@@ -4,12 +4,9 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
-
 from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from two_factor.urls import urlpatterns as tf_urls
-
 from .views import file_list, upload_file, delete_file
-
 from .views import (
     ExampleSecretView, HomeView, RegistrationCompleteView, RegistrationView,MyFetchView,
 )
@@ -17,7 +14,6 @@ from .views import (
 
 urlpatterns = [
 
-    #path('',file_list, name='home'),
     path('files/', file_list, name='file_list'),
     path('files/upload/', upload_file, name='upload_file'),
     path('files/<int:pk>/', delete_file, name='delete_file'),
@@ -62,4 +58,6 @@ if settings.DEBUG:
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ]
+    #Are we supposed to store the files elswhere than the device since we make a nas application?
+    #if so, put the following line outside of DEBUG
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

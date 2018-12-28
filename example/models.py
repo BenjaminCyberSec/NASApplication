@@ -3,13 +3,11 @@ from django.db.models.fields.files import (
     FieldFile,
     FileField
 ) 
-#here
 from io import BytesIO
 try:
     from django.urls import reverse
 except ImportError:  # Django < 2.0 # pragma: no cover
     from django.core.urlresolvers import reverse
-#from .constants import FETCH_URL_NAME
 from .crypt import Cryptographer
 try:
     from urllib.parse import quote as url_encode  # Python 3
@@ -20,14 +18,12 @@ from django.contrib.auth.models import User
 
 
 ###### custom wrapper of FieldFile #######
+## This Wrapper is used to encrypt files before they are saved ##
 
 class EncryptedFile(BytesIO):
     def __init__(self, content,password):
         self.size = content.size
         BytesIO.__init__(self, Cryptographer.encrypted(content.file.read(),password))
-
-
-
 
 class EncryptionMixin(object):
 
@@ -54,7 +50,7 @@ class EncryptedFieldFile(EncryptionMixin, FieldFile):
 class EncryptedFileField(FileField):
     attr_class = EncryptedFieldFile
 
-####### MODEL #######
+####### MODELS #######
 
 class File(models.Model):
     name = models.CharField(max_length=100)
