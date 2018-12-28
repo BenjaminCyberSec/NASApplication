@@ -32,14 +32,12 @@ class EncryptedFile(BytesIO):
 class EncryptionMixin(object):
 
     def save(self, name, content, save=True):
-        #password = bytes("password", 'utf-8')
         salt = bytes("salt", 'utf-8')
-        print(name)
         password = Cryptographer.getKey(Cryptographer.getUser(name))
         return FieldFile.save(
             self,
             name,
-            EncryptedFile(content,password,salt),
+            EncryptedFile(content,bytes(password, "utf8"),salt),
             save=save
         )
     save.alters_data = True

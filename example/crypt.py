@@ -4,11 +4,14 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives import hashes
 
 from expiringdict import ExpiringDict
 
+from hashlib import blake2b
 
 
+#https://cryptography.io/en/latest/hazmat/primitives/cryptographic-hashes/
 
 class Cryptographer(object):
     backend = default_backend()
@@ -46,10 +49,18 @@ class Cryptographer(object):
 
     @classmethod
     def derive(cls,message):
-        return cls.mapEncryption.encrypt(bytes(message, "utf8"))
-    @classmethod
-    def verify(cls,signature,key):
-        return cls.mapEncryption.decrypt(bytes(signature, "utf8"),key)
+        salt = bytes("salt", "utf-8") #put in environement
+        bm=bytes(message, "utf8")
+        items = [salt,bm]
+        h = blake2b()
+        for item in items:
+            h.update(item)
+        return h.hexdigest()
+
+        #return cls.mapEncryption.encrypt(bytes(message, "utf8"))
+    #@classmethod
+    #def verify(cls,signature,key):
+    #    return cls.mapEncryption.decrypt(bytes(signature, "utf8"),key)
 
 
     @classmethod

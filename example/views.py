@@ -46,9 +46,8 @@ def upload_file(request):
         form = FileForm(request.POST, request.FILES)
         if form.is_valid():
             user= request.user.id
-            
             password= Cryptographer.derive(form.cleaned_data['password'])
-            request.session['key'] = password.decode("utf-8") #move to connection
+            request.session['key'] = password#.decode("utf-8") #move to connection
             Cryptographer.addUser(user,password) #move to connection 
             
             for f in request.FILES.getlist('file_field'):
