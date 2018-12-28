@@ -1,0 +1,18 @@
+{% extends "two_factor/_base_focus.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h2>Enter your secret key</h2>
+    Enter the key that will be used to crypt your personal file. </br>
+    This key won't be kept on the server while not in used (deleted after 15 minutes or when you close your browser), therefore securing the confidentiality of your files.</br>
+    It has to be therefore managed by you.</br> 
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Set key</button>
+  </form>
+    </br> 
+    </br> 
+  In case of lost, you can enter a new one, and the new files will be handle using this key, the old ones will, however, remain crypted.</br>
+{% endblock %}

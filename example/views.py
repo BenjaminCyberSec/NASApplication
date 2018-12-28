@@ -29,6 +29,8 @@ from django.views.generic import View
 import requests
 from django.contrib.auth.models import User
 
+from .constants import SESSION_TTL
+
 
 @otp_required
 def file_list(request):
@@ -105,12 +107,13 @@ def EncryptionKey(request, *args, **kwargs):
             password= Cryptographer.derive(form.cleaned_data['password'])
             #(Django stores data on the server side and abstracts the sending and receiving of cookies. The content of what the user actually gets is only the session_id.)
             request.session['key'] = password#.decode("utf-8") #move to connection
+            request.session.set_expiry(SESSION_TTL)
             Cryptographer.addUser(user,password) #move to connection 
             return redirect('file_list')
 
     else:
         form = KeyForm()
-    return render(request, 'upload_file.html', {
+    return render(request, 'keyform.html', {
         'form': form
     })
 
