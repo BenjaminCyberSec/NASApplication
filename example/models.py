@@ -52,12 +52,19 @@ class EncryptedFileField(FileField):
 
 ####### MODELS #######
 
+def generate_filename(self, filename):
+    print("TEEEEESSSSSTTTTTT----------")
+    print(self.user.username)
+    print(filename)
+    url = "files/users/%s/%s" % (self.user.username, filename)
+    return url
+
 class File(models.Model):
     name = models.CharField(max_length=100)
     size = models.IntegerField() #in ko
     modification_date = models.DateField()  
     fileType = models.CharField(max_length=100)
-    file = EncryptedFileField(fileType,upload_to='files/')    
+    file = EncryptedFileField(fileType,upload_to=generate_filename)    
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     #check here when we will want to modify users https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#proxy
     

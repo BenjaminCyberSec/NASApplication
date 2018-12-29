@@ -34,7 +34,8 @@ from .constants import SESSION_TTL
 
 @otp_required
 def file_list(request):
-    files = File.objects.all()
+    user= request.user.id
+    files = File.objects.filter(user = User.objects.get(id=user))
     return render(request, 'file_list.html', {
         'files': files
     })
