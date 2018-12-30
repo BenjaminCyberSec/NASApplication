@@ -11,7 +11,7 @@ from two_factor.views.utils import class_view_decorator
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse_lazy
 from django_otp.decorators import otp_required
-from decorators import key_required
+from .decorators import key_required
 
 from .forms import FileForm,KeyForm
 from .models import File
@@ -109,7 +109,7 @@ def EncryptionKey(request, *args, **kwargs):
             #(Django stores data on the server side and abstracts the sending and receiving of cookies. The content of what the user actually gets is only the session_id.)
             request.session['key'] = password#.decode("utf-8") #move to connection
             request.session.set_expiry(SESSION_TTL)
-            Cryptographer.addUser(user,password) #move to connection 
+            Cryptographer.addUser(user,password) #move to connection
             return redirect('file_list')
 
     else:
@@ -126,7 +126,7 @@ def MyFetchView(request, *args, **kwargs):
     check if they own the files
     """
 
-    
+
     def is_url(path):
         try:
             URLValidator()(path)
@@ -169,11 +169,11 @@ def MyFetchView(request, *args, **kwargs):
         with open(path, "rb") as f:
             content = f.read()
 
-    #stored in django-session (In django stores data on the server side and abstracts the sending 
+    #stored in django-session (In django stores data on the server side and abstracts the sending
     # and receiving of cookies. The content of what the user actually gets is only the session_id.)
     if not 'key' in request.session:
         raise Http404
     password =  bytes(request.session['key'], 'utf-8')
-    
+
     content = Cryptographer.decrypted(content,password)
     return HttpResponse(content, content_type= mimetypes.guess_type(path, strict=True)[0] )
