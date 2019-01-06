@@ -18,15 +18,6 @@ pip install -r requirements.txt
 cd NASApplication/example
 ```
 
-Apply the migrations:
-
-
-
-```bash
-
-python manage.py migrate --run-syncdb
-```
-
 Set the servers's secret salt as environement variable
 e.g. with bash_profile
 
@@ -42,6 +33,17 @@ e.g. with Powershell
 setx DEFF_FILE_SALT "FILE_SALT"
 setx DEFF_KEY_SALT "KEY_SALT"
 ```
+
+Restart the terminal or powershell to apply the change
+
+Apply the migrations:
+
+
+```bash
+
+python manage.py migrate --run-syncdb
+```
+
 
 Finally, run the development server:
 
