@@ -11,7 +11,7 @@ from two_factor.views.utils import class_view_decorator
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse_lazy
 from django_otp.decorators import otp_required
-from decorators import key_required
+from .decorators import key_required
 
 from .forms import FileForm,KeyForm
 from .models import File
