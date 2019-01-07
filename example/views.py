@@ -138,15 +138,11 @@ def delete_file(request, pk):
 @otp_required
 def shared_file_list(request):
     user= request.user.id
-    owner = ''
     files = SharedFile.objects.prefetch_related('owner_set').filter(users__id=user).all()
-    if files:
-        owner = files[0].owner_set.filter(user_id=user).get()
-
-    return render(request, 'shared_file_list.html', {
-        'files': files,
-        'owner': owner
-    })
+    file_list = {}
+    for f in files:
+       file_list [f] = f.owner_set.filter(user_id=user).get() 
+    return render(request, 'shared_file_list.html', {'file_list':file_list})
 
 @otp_required
 def upload_shared_file(request):

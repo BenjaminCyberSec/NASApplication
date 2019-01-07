@@ -22,7 +22,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for file in files %}
+      {% for file,owner in file_list.items %}
         <tr>
           <td>{{ file.name }}</td>
           <td>{{ file.size }} ko</td>
