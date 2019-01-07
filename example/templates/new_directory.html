@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h2>Directory name and options</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Create directory</button>
+  </form>
+{% endblock %}
