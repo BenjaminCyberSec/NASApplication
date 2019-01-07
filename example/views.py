@@ -13,10 +13,16 @@ from django.urls import reverse_lazy
 from django_otp.decorators import otp_required
 from .decorators import key_required, file_address
 
+<<<<<<< HEAD
 from .forms import FileForm,KeyForm,NewDirectoryForm
 from .models import File
+=======
+from .forms import FileForm,KeyForm,SharedFileForm,OwnerFormSet
+from .models import File, SharedFile, Owner
+>>>>>>> 874a09b6e5476b1a2af1a7169deb5d0faf0b7223
 
 from .crypt import Cryptographer
+from .temporary_key_handler import TemporaryKeyHandler
 
 import datetime
 import mimetypes
@@ -31,8 +37,19 @@ from django.contrib.auth.models import User
 
 from .constants import SESSION_TTL
 
+from django.forms import formset_factory
+from .emails import Email
+from django.http import JsonResponse
+import re
+
+from django.shortcuts import redirect
+
+
+
+###### Methods relatives to files own by one user ######
 
 @otp_required
+<<<<<<< HEAD
 @file_address
 def file_list(request, *args, **kwargs):
     goto = kwargs.get("goto")
@@ -42,6 +59,12 @@ def file_list(request, *args, **kwargs):
     print(request.session['file_address'])
     user = request.user.id
     files = File.objects.filter(user = User.objects.get(id=user),file_address = request.session['file_address'])
+=======
+@key_required
+def file_list(request):
+    user= request.user.id
+    files = File.objects.filter(user = User.objects.get(id=user))
+>>>>>>> 874a09b6e5476b1a2af1a7169deb5d0faf0b7223
     return render(request, 'file_list.html', {
         'files': files,
         'address': request.session['file_address'],
@@ -56,7 +79,12 @@ def upload_file(request):
             user= request.user.id
             for f in request.FILES.getlist('file_field'):
                 data =f
+<<<<<<< HEAD
                 Cryptographer.addFile(user, data.name)
+=======
+                TemporaryKeyHandler.addFile(user, data.name)
+
+>>>>>>> 874a09b6e5476b1a2af1a7169deb5d0faf0b7223
                 File(name =  data.name,
                 size = data.size/1000,
                 modification_date = datetime.datetime.now(),
@@ -72,6 +100,7 @@ def upload_file(request):
     })
 
 @otp_required
+<<<<<<< HEAD
 def new_directory(request):
     if request.method == 'POST':
         form =NewDirectoryForm(request.POST, request.FILES)
@@ -94,12 +123,141 @@ def new_directory(request):
     })
 
 @otp_required
+=======
+@key_required
+>>>>>>> 874a09b6e5476b1a2af1a7169deb5d0faf0b7223
 def delete_file(request, pk):
     if request.method == 'POST':
         file = File.objects.get(pk=pk)
         file.delete()
     return redirect('file_list')
 
+
+
+###### Methods relatives to shared files ######
+
+@otp_required
+def shared_file_list(request):
+    user= request.user.id
+    owner = ''
+    files = SharedFile.objects.prefetch_related('owner_set').filter(users__id=user).all()
+    if files:
+        owner = files[0].owner_set.filter(user_id=user).get()
+
+    return render(request, 'shared_file_list.html', {
+        'files': files,
+        'owner': owner
+    })
+
+@otp_required
+def upload_shared_file(request):
+    if request.method == 'POST':
+        owner_formset = OwnerFormSet(request.POST, request.FILES)
+        form = SharedFileForm(request.POST, request.FILES)
+        if form.is_valid() and owner_formset.is_valid():
+            try:
+                user = request.user.id
+                owners = {}
+                shares = []
+                minimum_validation = form.cleaned_data.get('minimum_validation')
+                for of in owner_formset:
+                    owners[User.objects.filter(username=of.cleaned_data.get('name'))[0]]=[]
+                owners[User.objects.get(id=user)]=[]
+                size = len(owners)
+
+                for data in request.FILES.getlist('file_field'):
+                    key = Cryptographer.generateKey()
+                    TemporaryKeyHandler.addSharedFile(key,data.name)
+                    s=Cryptographer.shareKey(key, minimum_validation,size)
+                    s+=data.name
+                    shares.append(s)
+                    sh = SharedFile(name =  data.name,
+                    size = data.size/1000,
+                    modification_date = datetime.datetime.now(),
+                    file = data,
+                    nb_owners = size,
+                    minimum_validation = minimum_validation)
+                    sh.save()
+                    for owner in owners:
+                        Owner(user= owner,shared_file=sh ).save()
+                Email.sendKeys(shares,owners)
+                return redirect('shared_file_list')
+            except IndexError:
+                status_code = 400
+                message = "The request is not valid."
+                explanation = "You entered a username that is not in use."
+                return JsonResponse({'message':message,'explanation':explanation}, status=status_code)
+    else:
+        form = SharedFileForm()
+        formset = OwnerFormSet()
+    return render(request, 'upload_shared_file.html', {
+        'form': form, 'formset': formset
+    })
+
+@otp_required
+def delete_shared_file(request, pk):
+    if request.method == 'POST':
+        f = SharedFile.objects.get(pk=pk)
+        if not request.user in f.users.all(): #user is trying to access something he shouldn't
+            raise Http404
+        key_set = []
+        key_nbr = 0
+        for owner in f.owner_set.all():
+            if owner.wants_deletion and owner.date_key_given:
+                key_set += owner.secret_key_given
+                key_nbr+=1
+        if key_nbr >= f.minimum_validation:
+            f.delete()
+            return redirect('shared_file_list')
+        else:
+            return render(request, 'lockedfile.html', {
+                'name': f.name,
+                'minimum': f.minimum_validation,
+                'nbr' : key_nbr,
+                'reason': 'delete'
+            })
+    return redirect('shared_file_list')
+
+@otp_required
+def deletion_consent(request, pk):
+    if request.method == 'POST':
+        o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
+        if o.secret_key_given:
+            o.wants_deletion = True
+            o.save()
+        else:
+            return redirect('shared_key', pk=pk)
+    return redirect('shared_file_list')
+        
+
+@otp_required
+def read_consent(request, pk):
+    if request.method == 'POST':
+        o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
+        if o.secret_key_given:
+            o.wants_download = True
+            o.save()
+        else:
+            return redirect('shared_key', pk=pk)
+    return redirect('shared_file_list')
+        
+@otp_required
+def shared_key(request, pk):
+    if request.method == 'POST':
+        form = KeyForm(request.POST, request.FILES)
+        if form.is_valid():
+            password= form.cleaned_data['password']
+            o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
+            o.date_key_given = datetime.datetime.now()
+            o.secret_key_given = password
+            o.save()
+            return redirect('shared_file_list')
+    else:
+        form = KeyForm()
+    return render(request, 'sharedkeyform.html', {
+        'form': form
+    })
+            
 
 
 class HomeView(TemplateView):
@@ -139,7 +297,7 @@ def EncryptionKey(request, *args, **kwargs):
             #(Django stores data on the server side and abstracts the sending and receiving of cookies. The content of what the user actually gets is only the session_id.)
             request.session['key'] = password#.decode("utf-8") #move to connection
             request.session.set_expiry(SESSION_TTL)
-            Cryptographer.addUser(user,password) #move to connection
+            TemporaryKeyHandler.addUser(user,password) #move to connection
             return redirect('file_list')
 
     else:
@@ -151,11 +309,6 @@ def EncryptionKey(request, *args, **kwargs):
 @otp_required
 @key_required
 def MyFetchView(request, *args, **kwargs):
-    """
-    Limit user access to this view has to be added,
-    check if they own the files
-    """
-
 
     def is_url(path):
         try:
@@ -166,44 +319,73 @@ def MyFetchView(request, *args, **kwargs):
 
     path = kwargs.get("path")
 
-    #keep for right verification, might be needed
-    #result = File.objects.all().files.urls#.filter(url=path)[0]
-    #result = File.objects.raw('SELECT eu.id FROM example_user eu, example_files ef where eu.file = ef.id and ef.url = \"'+path+'\"')
-    #result = User.objects.raw('SELECT * FROM auth_user u')[0]
-    #result = File.objects.raw('SELECT * FROM example_file f ')[0]
-    #print(result.file)
-
     if not path:
         raise Http404
     else:
-        path ='http://127.0.0.1:8000' + path #when we stock this on the same machine
+        full_path ='http://127.0.0.1:8000' + path #when we stock this on the same machine
 
-    if is_url(path):
-
-        content = requests.get(path, stream=True).raw.read()
+    if is_url(full_path):
+        content = requests.get(full_path, stream=True).raw.read()
 
     else:
 
         # Normalise the path to strip out naughty attempts
-        path = os.path.normpath(path).replace(
+        full_path = os.path.normpath(full_path).replace(
             settings.MEDIA_URL, settings.MEDIA_ROOT, 1)
 
         # Evil path request!
-        if not path.startswith(settings.MEDIA_ROOT):
+        if not full_path.startswith(settings.MEDIA_ROOT):
             raise Http404
 
         # The file requested doesn't exist locally.  A legit 404
-        if not os.path.exists(path):
+        if not os.path.exists(full_path):
             raise Http404
 
-        with open(path, "rb") as f:
+        with open(full_path, "rb") as f:
             content = f.read()
 
-    #stored in django-session (In django stores data on the server side and abstracts the sending
-    # and receiving of cookies. The content of what the user actually gets is only the session_id.)
-    if not 'key' in request.session:
-        raise Http404
-    password =  bytes(request.session['key'], 'utf-8')
+    if re.search("media/shared_files/",path) :
+        f = SharedFile.objects.filter(url=path) 
+        #page deleted or malicious attempt
+        if not f:
+            raise Http404
+        else:
+            f = f.get()
+            
+        if not request.user in f.users.all(): #user is trying to access something he shouldn't
+            raise Http404
 
-    content = Cryptographer.decrypted(content,password)
+        key_set = []
+        key_nbr = 0
+        for owner in f.owner_set.all():
+            if owner.wants_download and owner.date_key_given:
+                key_set.append(owner.secret_key_given)
+                key_nbr+=1
+        if key_nbr >= f.minimum_validation:
+            password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
+            content = Cryptographer.decrypted(content,password)
+        else:
+            return render(request, 'lockedfile.html', {
+                'name': f.name,
+                'minimum': f.minimum_validation,
+                'nbr' : key_nbr,
+                'reason': 'read'
+            })
+    else:
+        f = File.objects.filter(url=path)
+        #page deleted or malicious attempt
+        if not f:
+            raise Http404
+        else:
+            f = f.get()
+
+        if f.user.id != request.user.id: #user is trying to access something he shouldn't
+            raise Http404
+
+        #the user password is stored in django-session (In django stores data on the server side and abstracts the sending
+        # and receiving of cookies. The content of what the user actually gets is only the session_id.)
+        password =  bytes(request.session['key'], 'utf-8')
+        content = Cryptographer.decrypted(content,password)
     return HttpResponse(content, content_type= mimetypes.guess_type(path, strict=True)[0] )
+
+ 

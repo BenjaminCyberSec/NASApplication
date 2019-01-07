@@ -12,7 +12,10 @@ Install the requirements:
 
 ```bash
 pip install -r requirements.txt
+
+pip install git+https://github.com/blockstack/secret-sharing
 ```
+(The newest package of that library has not been pushed on the pip repository yet)
 
 ```bash
 cd NASApplication/example

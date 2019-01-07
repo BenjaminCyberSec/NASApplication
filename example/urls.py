@@ -6,9 +6,13 @@ from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from two_factor.urls import urlpatterns as tf_urls
+<<<<<<< HEAD
 from .views import file_list, upload_file, delete_file, new_directory
+=======
+from .views import file_list, upload_file, delete_file, shared_file_list, upload_shared_file, delete_shared_file,deletion_consent,read_consent,shared_key
+>>>>>>> 874a09b6e5476b1a2af1a7169deb5d0faf0b7223
 from .views import (
-    ExampleSecretView, HomeView, RegistrationCompleteView, RegistrationView,MyFetchView,EncryptionKey,
+    ExampleSecretView, HomeView, RegistrationCompleteView, RegistrationView,MyFetchView,EncryptionKey
 )
 
 
@@ -18,7 +22,14 @@ urlpatterns = [
     path('files/upload/', upload_file, name='upload_file'),
     path('files/newDirectory/', new_directory, name='new_directory'),
     path('files/<int:pk>/', delete_file, name='delete_file'),
-    re_path(r"^fetch/(?P<path>.+)",MyFetchView,name='FETCH_URL_NAME'),
+    re_path(r"^fetch(?P<path>.+)",MyFetchView,name='FETCH_URL_NAME'),
+
+    path('shared_files/',shared_file_list, name='shared_file_list'),
+    path('shared_files/upload/', upload_shared_file, name='upload_shared_file'),
+    path('shared_files/<int:pk>/', delete_shared_file, name='delete_shared_file'),
+    path('shared_files/deletion_consent/<int:pk>/', deletion_consent, name='deletion_consent'),
+    path('shared_files/read_consent/<int:pk>/', read_consent, name='read_consent'),
+    path('shared_files/shared_key/<int:pk>/', shared_key, name='shared_key'),
 
     path('encryptionkey/', EncryptionKey, name='encryption_key'),
 
