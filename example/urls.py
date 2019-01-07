@@ -6,7 +6,7 @@ from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from two_factor.urls import urlpatterns as tf_urls
-from .views import file_list, upload_file, delete_file
+from .views import file_list, upload_file, delete_file, shared_file_list, upload_shared_file, delete_shared_file
 from .views import (
     ExampleSecretView, HomeView, RegistrationCompleteView, RegistrationView,MyFetchView,EncryptionKey,
 )
@@ -17,7 +17,11 @@ urlpatterns = [
     path('files/', file_list, name='file_list'),
     path('files/upload/', upload_file, name='upload_file'),
     path('files/<int:pk>/', delete_file, name='delete_file'),
-    re_path(r"^fetch/(?P<path>.+)",MyFetchView,name='FETCH_URL_NAME'),
+    re_path(r"^fetch(?P<path>.+)",MyFetchView,name='FETCH_URL_NAME'),
+
+    path('shared_files/',shared_file_list, name='shared_file_list'),
+    path('shared_files/upload/', upload_shared_file, name='upload_shared_file'),
+    path('shared_files/<int:pk>/', delete_shared_file, name='delete_shared_file'),
 
     path('encryptionkey/', EncryptionKey, name='encryption_key'),
 

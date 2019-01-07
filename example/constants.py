@@ -26,4 +26,4 @@ FILE_SALT = get_bytes(_get_setting("FILE_SALT"))
 KEY_SALT = get_bytes(_get_setting("KEY_SALT")) 
 #FILE_SALT = get_bytes("FILE_SALT")
 #KEY_SALT = get_bytes("KEY_SALT")
-SESSION_TTL = 900  
+SESSION_TTL = 90000  
