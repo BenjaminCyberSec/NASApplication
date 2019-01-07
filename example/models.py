@@ -93,7 +93,7 @@ class File(AbstractBaseFile):
         super().delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.url = "%sfiles/users/%s/%s" % (MEDIA_URL,"ben", self.name) #don't keep ben
+        self.url = "%sfiles/users/%s/%s" % (MEDIA_URL,self.user.username, self.name) #don't keep ben
         super(File, self).save(*args, **kwargs)
 
     def __str__(self):

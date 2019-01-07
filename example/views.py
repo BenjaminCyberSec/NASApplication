@@ -46,18 +46,35 @@ from django.shortcuts import redirect
 @otp_required
 @key_required
 @file_address
-def file_list(request, *args, **kwargs):
-    goto = kwargs.get("goto")
-    if goto:
-        request.session['file_address'] = request.session['file_address']+"/"+goto
-        print("goto parameter passed")
-    print(request.session['file_address'])
+def file_list(request):
     user = request.user.id
-    files = File.objects.filter(user = User.objects.get(id=user),file_address = request.session['file_address'])
+    files = File.objects.filter(user = User.objects.get(id=user),address = request.session['file_address'])
     return render(request, 'file_list.html', {
         'files': files,
         'address': request.session['file_address'],
     })
+
+@otp_required
+@key_required
+@file_address
+def change_address(request,name):
+    request.session['file_address'] = request.session['file_address']+"/"+name
+    #print(request.session['file_address'])
+    return redirect('file_list')
+
+@otp_required
+@key_required
+@file_address
+def go_back(request):
+    file_address = request.session['file_address']
+    if len(file_address) != 0:
+        #print(file_address)
+        address_split = file_address.split('/')
+        address_split = address_split[:-1]
+        address_split = '/'.join(address_split)
+        #print(address_split)
+        request.session['file_address'] = address_split
+    return redirect('file_list')
 
 @otp_required
 @key_required
@@ -91,7 +108,7 @@ def new_directory(request):
         if form.is_valid():
             user = request.user.id
             directory_name = form.cleaned_data['directory_name']
-            Cryptographer.addFile(user, directory_name)
+            TemporaryKeyHandler.addFile(user, directory_name)
             File(name =  directory_name,
             size = 0,
             modification_date = datetime.datetime.now(),
@@ -354,13 +371,17 @@ def MyFetchView(request, *args, **kwargs):
                 'reason': 'read'
             })
     else:
+        print("CCCCOOOOOUUUUUCCCCCOOOOUUUU")
         f = File.objects.filter(url=path)
+        print(path)
+        print(f)
         #page deleted or malicious attempt
         if not f:
             raise Http404
         else:
             f = f.get()
-
+        print(f.user.id)
+        print(request.user.id)
         if f.user.id != request.user.id: #user is trying to access something he shouldn't
             raise Http404
 

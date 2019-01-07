@@ -10,10 +10,13 @@
     <p>
       <a href="{% url 'new_directory' %}" class="btn btn-primary">New directory</a>
     </p>
+    <p>
+      <a href="{% url 'go_back' %}" class="btn btn-primary">Go back</a>
+    </p>
 
   {% endblock %}
 
-  <h3>Address = {% address %}</h3>
+  <h3>Address = "{{ address }}"</h3>
 
   <table class="table mb-0">
     <thead>
@@ -29,10 +32,10 @@
     <tbody>
       {% for file in files %}
         {# Fichiers #}
-        {% if file.file_category == "Fichier" %}
+        {% if file.category == "Fichier" %}
           <tr>
             <td>{{ file.name }}</td>
-            <td>{{ file.file_category }}</td>
+            <td>{{ file.category }}</td>
             <td>{{ file.size }} ko</td>
             <td>{{ file.modification_date }}</td>
             <td>
@@ -49,21 +52,21 @@
           </tr>
         {% endif %}
         {# Dossiers #}
-        {% if file.file_category == "Dossier" %}
+        {% if file.category == "Dossier" %}
           <tr>
             <td>{{ file.name }}</td>
             <td>{{ file.file_category }}</td>
             <td>{{ file.size }} ko</td>
             <td>{{ file.modification_date }}</td>
             <td>
-              <a href="{% url 'file_list' file.name %}" class="btn btn-primary btn-sm" target="_blank">
+              <a href="{% url 'change_address' file.name %}" class="btn btn-primary btn-sm">
                 Go To
               </a>
             </td>
             <td>
               <form method="post" action="{% url 'delete_file' file.pk %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                <button type="submit" class="btn btn-danger btn-sm" disabled>Delete</button>
               </form>
             </td>
           </tr>
