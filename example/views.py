@@ -13,13 +13,8 @@ from django.urls import reverse_lazy
 from django_otp.decorators import otp_required
 from .decorators import key_required, file_address
 
-<<<<<<< HEAD
-from .forms import FileForm,KeyForm,NewDirectoryForm
-from .models import File
-=======
-from .forms import FileForm,KeyForm,SharedFileForm,OwnerFormSet
+from .forms import FileForm,KeyForm,SharedFileForm,OwnerFormSet,NewDirectoryForm
 from .models import File, SharedFile, Owner
->>>>>>> 874a09b6e5476b1a2af1a7169deb5d0faf0b7223
 
 from .crypt import Cryptographer
 from .temporary_key_handler import TemporaryKeyHandler
@@ -49,7 +44,7 @@ from django.shortcuts import redirect
 ###### Methods relatives to files own by one user ######
 
 @otp_required
-<<<<<<< HEAD
+@key_required
 @file_address
 def file_list(request, *args, **kwargs):
     goto = kwargs.get("goto")
@@ -59,12 +54,6 @@ def file_list(request, *args, **kwargs):
     print(request.session['file_address'])
     user = request.user.id
     files = File.objects.filter(user = User.objects.get(id=user),file_address = request.session['file_address'])
-=======
-@key_required
-def file_list(request):
-    user= request.user.id
-    files = File.objects.filter(user = User.objects.get(id=user))
->>>>>>> 874a09b6e5476b1a2af1a7169deb5d0faf0b7223
     return render(request, 'file_list.html', {
         'files': files,
         'address': request.session['file_address'],
@@ -79,12 +68,8 @@ def upload_file(request):
             user= request.user.id
             for f in request.FILES.getlist('file_field'):
                 data =f
-<<<<<<< HEAD
-                Cryptographer.addFile(user, data.name)
-=======
                 TemporaryKeyHandler.addFile(user, data.name)
 
->>>>>>> 874a09b6e5476b1a2af1a7169deb5d0faf0b7223
                 File(name =  data.name,
                 size = data.size/1000,
                 modification_date = datetime.datetime.now(),
@@ -100,7 +85,6 @@ def upload_file(request):
     })
 
 @otp_required
-<<<<<<< HEAD
 def new_directory(request):
     if request.method == 'POST':
         form =NewDirectoryForm(request.POST, request.FILES)
@@ -123,9 +107,7 @@ def new_directory(request):
     })
 
 @otp_required
-=======
 @key_required
->>>>>>> 874a09b6e5476b1a2af1a7169deb5d0faf0b7223
 def delete_file(request, pk):
     if request.method == 'POST':
         file = File.objects.get(pk=pk)
