@@ -62,13 +62,14 @@ def generate_filename(self, filename):
 class File(models.Model):
     name = models.CharField(max_length=100)
     size = models.IntegerField() #in ko
+    category = models.CharField(max_length=8)
+    address = models.CharField(max_length=1000)
     modification_date = models.DateField()  
     fileType = models.CharField(max_length=100)
     file = EncryptedFileField(fileType,upload_to=generate_filename)    
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     #check here when we will want to modify users https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#proxy
     
-
     def __str__(self):
         return self.name
 

@@ -8,3 +8,6 @@ class FileForm(forms.Form):
 
 class KeyForm(forms.Form):
      password = forms.CharField(widget=forms.PasswordInput())
+
+class NewDirectoryForm(forms.Form):
+     directory_name = forms.CharField()

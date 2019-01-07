@@ -11,9 +11,9 @@ from two_factor.views.utils import class_view_decorator
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse_lazy
 from django_otp.decorators import otp_required
-from .decorators import key_required
+from .decorators import key_required, file_address
 
-from .forms import FileForm,KeyForm
+from .forms import FileForm,KeyForm,NewDirectoryForm
 from .models import File
 
 from .crypt import Cryptographer
@@ -33,11 +33,18 @@ from .constants import SESSION_TTL
 
 
 @otp_required
-def file_list(request):
-    user= request.user.id
-    files = File.objects.filter(user = User.objects.get(id=user))
+@file_address
+def file_list(request, *args, **kwargs):
+    goto = kwargs.get("goto")
+    if goto:
+        request.session['file_address'] = request.session['file_address']+"/"+goto
+        print("goto parameter passed")
+    print(request.session['file_address'])
+    user = request.user.id
+    files = File.objects.filter(user = User.objects.get(id=user),file_address = request.session['file_address'])
     return render(request, 'file_list.html', {
-        'files': files
+        'files': files,
+        'address': request.session['file_address'],
     })
 
 @otp_required
@@ -50,16 +57,39 @@ def upload_file(request):
             for f in request.FILES.getlist('file_field'):
                 data =f
                 Cryptographer.addFile(user, data.name)
-
                 File(name =  data.name,
                 size = data.size/1000,
                 modification_date = datetime.datetime.now(),
                 file = data,
+                category = "Fichier",
+                address = request.session['file_address'],
                 user = User.objects.get(id=user)).save()
             return redirect('file_list')
     else:
         form = FileForm()
     return render(request, 'upload_file.html', {
+        'form': form
+    })
+
+@otp_required
+def new_directory(request):
+    if request.method == 'POST':
+        form =NewDirectoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = request.user.id
+            directory_name = form.cleaned_data['directory_name']
+            Cryptographer.addFile(user, directory_name)
+            File(name =  directory_name,
+            size = 0,
+            modification_date = datetime.datetime.now(),
+            file = 0,
+            category = "Dossier",
+            address = request.session['file_address'],
+            user = User.objects.get(id=user)).save()
+            return redirect('file_list')
+    else:
+        form = NewDirectoryForm()
+    return render(request, 'new_directory.html', {
         'form': form
     })
 

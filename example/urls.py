@@ -6,7 +6,7 @@ from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from two_factor.urls import urlpatterns as tf_urls
-from .views import file_list, upload_file, delete_file
+from .views import file_list, upload_file, delete_file, new_directory
 from .views import (
     ExampleSecretView, HomeView, RegistrationCompleteView, RegistrationView,MyFetchView,EncryptionKey,
 )
@@ -14,8 +14,9 @@ from .views import (
 
 urlpatterns = [
 
-    path('files/', file_list, name='file_list'),
+    path(r"^files/list/(?P<goto>.+)", file_list, name='file_list'),
     path('files/upload/', upload_file, name='upload_file'),
+    path('files/newDirectory/', new_directory, name='new_directory'),
     path('files/<int:pk>/', delete_file, name='delete_file'),
     re_path(r"^fetch/(?P<path>.+)",MyFetchView,name='FETCH_URL_NAME'),
 
