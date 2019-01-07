@@ -91,7 +91,7 @@ class File(AbstractBaseFile):
         super().delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.url = "%sfiles/users/%s/%s" % (MEDIA_URL,"ben", self.name)
+        self.url = "%sfiles/users/%s/%s" % (MEDIA_URL,"ben", self.name) #don't keep ben
         super(File, self).save(*args, **kwargs)
 
     
@@ -102,7 +102,7 @@ class SharedFile(AbstractBaseFile):
     file = EncryptedFileField(fileType,upload_to="shared_files/")   
     nb_owners =  models.IntegerField()
     minimum_validation =  models.IntegerField()
-    owners = models.ManyToManyField(User, through='Owner')
+    users = models.ManyToManyField(User, through='Owner')
     url = models.CharField(max_length=100, null=True)
 
     def delete(self, *args, **kwargs):

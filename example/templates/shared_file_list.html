@@ -16,7 +16,9 @@
         <th>Size</th>
         <th>Modification date</th>
         <th>Download</th>
+        <th>Grant download permission</th>
         <th>Delete</th>
+        <th>Grant delete permission</th>
       </tr>
     </thead>
     <tbody>
@@ -31,10 +33,30 @@
             </a>
           </td>
           <td>
+            {% if owner.wants_download %}
+            given
+            {% else %}
+            <form method="post" action="{% url 'read_consent' file.pk %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-warning btn-sm">Give</button>
+            </form>
+            {% endif %}
+          </td>
+          <td>
             <form method="post" action="{% url 'delete_shared_file' file.pk %}">
               {% csrf_token %}
               <button type="submit" class="btn btn-danger btn-sm">Delete</button>
             </form>
+          </td>
+          <td>
+            {% if owner.wants_deletion  %}
+            given
+            {% else %}
+            <form method="post" action="{% url 'deletion_consent' file.pk %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-warning btn-sm">Give</button>
+            </form>
+            {% endif %}
           </td>
         </tr>
       {% endfor %}

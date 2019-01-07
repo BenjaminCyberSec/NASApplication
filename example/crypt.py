@@ -58,7 +58,10 @@ class Cryptographer(object):
         return shares
 
     @classmethod
-    def recoverKey(cls, shares, size):
-        return SecretSharer.recover_secret(shares[0:size])
+    def recoverKey(cls, shares):
+        #size = len(shares)
+        print(shares)
+        shares=['1-58cbd30524507e7a198bdfeb69c8d87fd7d2c10e8d5408851404f7d258cbcea7', '2-ecdbdaea89d75f8e73bde77a46db821cd40f430d39a11c864e5a4868dcb403ed']
+        return SecretSharer.recover_secret(shares)#[0:size])
 
     

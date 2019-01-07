@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h2>Before doing any operation you need to add the secret key you recieved for this file</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Set key</button>
+  </form>
+    </br> 
+    </br> 
+{% endblock %}
