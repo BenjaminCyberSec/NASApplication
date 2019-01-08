@@ -125,7 +125,7 @@ class Owner(models.Model):
     shared_file = models.ForeignKey(SharedFile,on_delete=models.CASCADE)
     secret_key_validation = models.CharField(max_length=100)
     date_key_given = models.DateField(null=True)
-    secret_key_given = models.CharField(max_length=140, null=True)#real length is 133
+    secret_key_given = models.BinaryField(max_length=130, null=True)#real length is 128
     wants_deletion = models.BooleanField(default=False)
     wants_download = models.BooleanField(default=False)
     

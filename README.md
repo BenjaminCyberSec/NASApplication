@@ -28,6 +28,7 @@ e.g. with bash_profile
 
 export DEFF_FILE_SALT = "FILE_SALT"
 export DEFF_KEY_SALT = "KEY_SALT"
+export DEFF_KEY_PASSWORD = "KEY_PASSWORD"
 ```
 
 e.g. with Powershell
@@ -35,9 +36,10 @@ e.g. with Powershell
 ```bash
 setx DEFF_FILE_SALT "FILE_SALT"
 setx DEFF_KEY_SALT "KEY_SALT"
+setx DEFF_KEY_PASSWORD "KEY_PASSWORD"
 ```
 
-Restart the terminal or powershell to apply the change
+**Restart the terminal or powershell to apply the change**
 
 Apply the migrations:
 

@@ -25,6 +25,7 @@ def get_bytes(v):
 
 FILE_SALT = get_bytes(_get_setting("FILE_SALT")) 
 KEY_SALT = get_bytes(_get_setting("KEY_SALT")) 
-#FILE_SALT = get_bytes("FILE_SALT")
-#KEY_SALT = get_bytes("KEY_SALT")
-SESSION_TTL = 900000#90000  
+KEY_PASSWORD = get_bytes(_get_setting("KEY_PASSWORD")) 
+
+
+SESSION_TTL = 9000

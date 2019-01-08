@@ -246,7 +246,7 @@ def shared_key(request, pk):
             password= form.cleaned_data['password']
             o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
             o.date_key_given = datetime.datetime.now()
-            o.secret_key_given = password
+            o.secret_key_given = Cryptographer.encryptKeyPart(password)
             o.save()
             return redirect('shared_file_list')
     else:
@@ -341,6 +341,7 @@ def MyFetchView(request, *args, **kwargs):
         with open(full_path, "rb") as f:
             content = f.read()
 
+    #This is a shared file
     if re.search("media/shared_files/",path) :
         f = SharedFile.objects.filter(url=path) 
         #page deleted or malicious attempt
@@ -356,7 +357,7 @@ def MyFetchView(request, *args, **kwargs):
         key_nbr = 0
         for owner in f.owner_set.all():
             if owner.wants_download and owner.date_key_given:
-                key_set.append(owner.secret_key_given)
+                key_set.append(Cryptographer.decryptKeyPart(owner.secret_key_given))
                 key_nbr+=1
         if key_nbr >= f.minimum_validation:
             password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
@@ -368,6 +369,8 @@ def MyFetchView(request, *args, **kwargs):
                 'nbr' : key_nbr,
                 'reason': 'read'
             })
+
+    #This is a user owned file
     else:
         f = File.objects.filter(url=path)
         #page deleted or malicious attempt

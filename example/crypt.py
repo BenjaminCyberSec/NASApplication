@@ -5,14 +5,15 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from hashlib import blake2b
 from secretsharing import SecretSharer
-from .constants import FILE_SALT,KEY_SALT
+from .constants import FILE_SALT,KEY_SALT,KEY_PASSWORD
 
 
 # Handle the file cryptage
 class Cryptographer(object):
 
-    #hash the given password using blake2 and return the key that will be use as password 
-    # to encrypt & decrypt files
+    #hash the given user password using blake2 and return the key that will be use as password
+    #  to encrypt & decrypt files 
+    # (avoid to keep a cleartext password in the django session in case the user use the same password for other things)
     @classmethod
     def derive(cls,message):
         bm=bytes(message, "utf8")
@@ -59,6 +60,14 @@ class Cryptographer(object):
 
     @classmethod
     def recoverKey(cls, shares):
-        return SecretSharer.recover_secret(shares)#[0:size])
+        return SecretSharer.recover_secret(shares)
+
+    @classmethod
+    def encryptKeyPart(cls, content):
+        return cls.encrypted(bytes(content, 'utf-8'), KEY_PASSWORD)
+
+    @classmethod
+    def decryptKeyPart(cls, content): 
+        return cls.decrypted(content, KEY_PASSWORD).decode("utf-8")
 
     
