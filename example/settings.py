@@ -127,6 +127,15 @@ PHONENUMBER_DEFAULT_REGION = 'BE'
 SESSION_ENGINE = 'user_sessions.backends.db'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL = 'noreply@nasapp.be'
+#EMAIL_HOST 
+#EMAIL_PORT
+#EMAIL_HOST_USER 
+#EMAIL_HOST_PASSWORD
+#EMAIL_USE_TLS
+#EMAIL_USE_SSL 
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/

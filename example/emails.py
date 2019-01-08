@@ -1,5 +1,6 @@
 from django.core import mail
 from django.core.mail import EmailMessage
+from .settings import EMAIL
 
 # Handle very simple email generation
 class Email(object):
@@ -12,7 +13,7 @@ class Email(object):
             messages.append(EmailMessage(
                 'Files were shared with you!',
                 cls.generateBody(user,key_list),
-                'noreply@nasapp.be',
+                EMAIL,
                 [user.email],
                 [],#bbc
             ))
