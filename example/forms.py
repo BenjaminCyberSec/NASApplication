@@ -27,7 +27,6 @@ OwnerFormSet = formset_factory(OwnerForm, extra=1)
 class SharedFileForm(forms.Form):
      minimum_validation = forms.IntegerField(label='Enter the minimum users required to unlock the file (at least 2)')
      file_field = forms.FileField(label='Select the file(s) you want to add',widget=forms.ClearableFileInput(attrs={'multiple': True}))
-     #OwnerFormSet = formset_factory(OwnerForm, extra=2)
 
 #This form extends the default user creation form to get the user email
 class SignUpForm(UserCreationForm):

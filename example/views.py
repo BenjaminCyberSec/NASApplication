@@ -153,7 +153,6 @@ def upload_shared_file(request):
             try:
                 user = request.user.id
                 owners = {}
-                shares = []
                 minimum_validation = form.cleaned_data.get('minimum_validation')
                 for of in owner_formset:
                     owners[User.objects.filter(username=of.cleaned_data.get('name'))[0]]=[]
@@ -164,8 +163,11 @@ def upload_shared_file(request):
                     key = Cryptographer.generateKey()
                     TemporaryKeyHandler.addSharedFile(key,data.name)
                     s=Cryptographer.shareKey(key, minimum_validation,size)
-                    s+=data.name
-                    shares.append(s)
+                    i=0
+                    for k,v in owners.items():
+                        v.append(data.name)
+                        v.append(s[i])
+                        i+=1
                     sh = SharedFile(name =  data.name,
                     size = data.size/1000,
                     modification_date = datetime.datetime.now(),
@@ -173,9 +175,9 @@ def upload_shared_file(request):
                     nb_owners = size,
                     minimum_validation = minimum_validation)
                     sh.save()
-                    for owner in owners:
-                        Owner(user= owner,shared_file=sh ).save()
-                Email.sendKeys(shares,owners)
+                    for user in owners.keys():
+                        Owner(user= user,shared_file=sh ).save()
+                Email.sendKeys(owners)
                 return redirect('shared_file_list')
             except IndexError:
                 status_code = 400
@@ -367,17 +369,13 @@ def MyFetchView(request, *args, **kwargs):
                 'reason': 'read'
             })
     else:
-        print("CCCCOOOOOUUUUUCCCCCOOOOUUUU")
         f = File.objects.filter(url=path)
-        print(path)
-        print(f)
         #page deleted or malicious attempt
         if not f:
             raise Http404
         else:
             f = f.get()
-        print(f.user.id)
-        print(request.user.id)
+
         if f.user.id != request.user.id: #user is trying to access something he shouldn't
             raise Http404
 
