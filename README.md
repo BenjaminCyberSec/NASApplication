@@ -53,3 +53,7 @@ Finally, run the development server:
 ```bash
 python manage.py runserver
 ```
+
+Note:
+When the project is run locally, django will print mails (use to transmit keys of shared files) on the console.
+In production the settings file has to be edited to provide the host, the port, the credentials as well as tls and ssl like explained in the rapport
