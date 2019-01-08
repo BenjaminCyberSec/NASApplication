@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 from django_otp.decorators import otp_required
 from .decorators import key_required, file_address
 
-from .forms import FileForm,KeyForm,SharedFileForm,OwnerFormSet,NewDirectoryForm
+from .forms import FileForm,KeyForm,SharedFileForm,OwnerFormSet,NewDirectoryForm,SignUpForm
 from .models import File, SharedFile, Owner
 
 from .crypt import Cryptographer
@@ -261,7 +261,7 @@ class HomeView(TemplateView):
 
 class RegistrationView(FormView):
     template_name = 'registration.html'
-    form_class = UserCreationForm
+    form_class = SignUpForm
 
     def form_valid(self, form):
         form.save()

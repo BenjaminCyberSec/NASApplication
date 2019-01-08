@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import formset_factory
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from .models import File
 
 
@@ -27,6 +28,14 @@ class SharedFileForm(forms.Form):
      minimum_validation = forms.IntegerField(label='Enter the minimum users required to unlock the file (at least 2)')
      file_field = forms.FileField(label='Select the file(s) you want to add',widget=forms.ClearableFileInput(attrs={'multiple': True}))
      #OwnerFormSet = formset_factory(OwnerForm, extra=2)
+
+#This form extends the default user creation form to get the user email
+class SignUpForm(UserCreationForm):
+    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2', )
      
 
 
