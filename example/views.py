@@ -319,8 +319,7 @@ def MyFetchView(request, *args, **kwargs):
     if not path:
         raise Http404
     else:
-        full_path ='http://127.0.0.1:8000' + path #when we stock this on the same machine
-
+        full_path=re.sub('/fetch', '', request.build_absolute_uri())
     if is_url(full_path):
         content = requests.get(full_path, stream=True).raw.read()
 
