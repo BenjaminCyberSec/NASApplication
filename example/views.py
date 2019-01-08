@@ -91,7 +91,7 @@ def upload_file(request):
                 size = data.size/1000,
                 modification_date = datetime.datetime.now(),
                 file = data,
-                category = "Fichier",
+                category = "File",
                 address = request.session['file_address'],
                 user = User.objects.get(id=user)).save()
             return redirect('file_list')
@@ -113,7 +113,7 @@ def new_directory(request):
             size = 0,
             modification_date = datetime.datetime.now(),
             file = 0,
-            category = "Dossier",
+            category = "Directory",
             address = request.session['file_address'],
             user = User.objects.get(id=user)).save()
             return redirect('file_list')

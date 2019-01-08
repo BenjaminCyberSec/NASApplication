@@ -1,6 +1,7 @@
 import os
 from django.conf import settings
 from django.utils import six
+from enum import Enum
 
 
 def _get_setting(name):

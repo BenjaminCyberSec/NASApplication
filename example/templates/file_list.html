@@ -10,13 +10,15 @@
     <p>
       <a href="{% url 'new_directory' %}" class="btn btn-primary">New directory</a>
     </p>
-    <p>
-      <a href="{% url 'go_back' %}" class="btn btn-primary">Go back</a>
-    </p>
+    {% if not address == "" %}
+      <p>
+        <a href="{% url 'go_back' %}" class="btn btn-primary">Go back</a>
+      </p>
+    {% endif %}
 
   {% endblock %}
 
-  <h3>Address = "{{ address }}"</h3>
+  <h3>Address = "{{ address }}" {% if address == "" %} (Root) {% endif %}</h3>
 
   <table class="table mb-0">
     <thead>
@@ -31,8 +33,8 @@
     </thead>
     <tbody>
       {% for file in files %}
-        {# Fichiers #}
-        {% if file.category == "Fichier" %}
+        {# Files #}
+        {% if file.category == "File" %}
           <tr>
             <td>{{ file.name }}</td>
             <td>{{ file.category }}</td>
@@ -51,8 +53,8 @@
             </td>
           </tr>
         {% endif %}
-        {# Dossiers #}
-        {% if file.category == "Dossier" %}
+        {# Directories #}
+        {% if file.category == "Directory" %}
           <tr>
             <td>{{ file.name }}</td>
             <td>{{ file.file_category }}</td>

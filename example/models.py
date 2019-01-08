@@ -19,6 +19,7 @@ from .settings import MEDIA_URL
 
 
 
+
 ###### custom wrapper of FieldFile #######
 ## This Wrapper is used to encrypt files before they are saved ##
 
@@ -61,7 +62,7 @@ def generate_filename(self, filename):
     return url
 
 #The AbstractBaseFile abstract model defines the common fields of every type of files models
-class AbstractBaseFile(models.Model):
+class AbstractBaseFile(models.Model): 
     name = models.CharField(max_length=100)
     size = models.IntegerField() #in ko
     category = models.CharField(max_length=8)
