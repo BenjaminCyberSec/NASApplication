@@ -13,6 +13,9 @@ class KeyForm(forms.Form):
 
 class NewDirectoryForm(forms.Form):
      directory_name = forms.CharField()
+
+class RenameForm(forms.Form):
+     new_name = forms.CharField()
      
 class OwnerForm(forms.Form):
      name = forms.CharField(
