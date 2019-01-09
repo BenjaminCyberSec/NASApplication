@@ -6,7 +6,7 @@ from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from two_factor.urls import urlpatterns as tf_urls
-from .views import file_list, upload_file, delete_file, shared_file_list, upload_shared_file, delete_shared_file,deletion_consent,read_consent,shared_key,new_directory,change_address, go_back
+from .views import file_list, upload_file, delete_file,delete_directory,rename_file,rename_directory, shared_file_list, upload_shared_file, delete_shared_file,deletion_consent,read_consent,shared_key,new_directory,change_address,go_back
 from .views import (
     ExampleSecretView, HomeView, RegistrationCompleteView, RegistrationView,MyFetchView,EncryptionKey
 )
@@ -19,7 +19,10 @@ urlpatterns = [
     path('files/upload/', upload_file, name='upload_file'),
     path('files/newDirectory/', new_directory, name='new_directory'),
     path('files/go_back/', go_back, name='go_back'),
-    path('files/<int:pk>/', delete_file, name='delete_file'),
+    path('files/delete_file/<int:pk>/', delete_file, name='delete_file'),
+    path('files/delete_directory/<int:pk>/', delete_directory, name='delete_directory'),
+    path('files/rename_file/<int:pk>/<str:name>/', rename_file, name='rename_file'),
+    path('files/rename_directory/<int:pk>/<str:name>/', rename_directory, name='rename_directory'),
     re_path(r"^fetch(?P<path>.+)",MyFetchView,name='FETCH_URL_NAME'),
 
     path('shared_files/',shared_file_list, name='shared_file_list'),

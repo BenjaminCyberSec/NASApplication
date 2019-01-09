@@ -65,7 +65,7 @@ def generate_filename(self, filename):
 class AbstractBaseFile(models.Model): 
     name = models.CharField(max_length=100)
     size = models.IntegerField() #in ko
-    category = models.CharField(max_length=8)
+    category = models.CharField(max_length=10)
     address = models.CharField(max_length=1000)
     modification_date = models.DateField()  
     

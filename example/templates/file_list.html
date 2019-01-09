@@ -27,7 +27,7 @@
         <th>Type</th>
         <th>Size</th>
         <th>Modification date</th>
-        <th>Action</th>
+        <th>Actions</th>
         <th>Delete</th>
       </tr>
     </thead>
@@ -41,9 +41,19 @@
             <td>{{ file.size }} ko</td>
             <td>{{ file.modification_date }}</td>
             <td>
-              <a href="{{ file.file.url }}" class="btn btn-primary btn-sm" target="_blank">
-                Download
-              </a>
+              <div class="dropdown">
+                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Actions
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item btn btn-sm" href="{{ file.file.url }}">
+                    Download
+                  </a>
+                  <a class="dropdown-item btn btn-sm" href="{% url 'rename_file' file.pk file.name %}">
+                    Rename
+                  </a>
+                </div>
+              </div>
             </td>
             <td>
               <form method="post" action="{% url 'delete_file' file.pk %}">
@@ -57,18 +67,31 @@
         {% if file.category == "Directory" %}
           <tr>
             <td>{{ file.name }}</td>
-            <td>{{ file.file_category }}</td>
+            <td>{{ file.category }}</td>
             <td>{{ file.size }} ko</td>
             <td>{{ file.modification_date }}</td>
             <td>
-              <a href="{% url 'change_address' file.name %}" class="btn btn-primary btn-sm">
-                Go To
-              </a>
+              <div class="dropdown">
+                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Actions
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item btn btn-sm" href="{% url 'change_address' file.name %}">
+                    Go To
+                  </a>
+                  <a class="dropdown-item btn btn-sm" href="{% url 'change_address' file.name %}">
+                    Download
+                  </a>
+                  <a class="dropdown-item btn btn-sm" href="{% url 'rename_directory' file.pk file.name %}">
+                    Rename
+                  </a>
+                </div>
+              </div>
             </td>
             <td>
-              <form method="post" action="{% url 'delete_file' file.pk %}">
+              <form method="post" action="{% url 'delete_directory' file.pk %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm" disabled>Delete</button>
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
               </form>
             </td>
           </tr>

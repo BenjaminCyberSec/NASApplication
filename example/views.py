@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 from django_otp.decorators import otp_required
 from .decorators import key_required, file_address
 
-from .forms import FileForm,KeyForm,SharedFileForm,OwnerFormSet,NewDirectoryForm,SignUpForm
+from .forms import FileForm,KeyForm,SharedFileForm,OwnerFormSet,NewDirectoryForm,SignUpForm,RenameForm
 from .models import File, SharedFile, Owner
 
 from .crypt import Cryptographer
@@ -38,8 +38,6 @@ from django.http import JsonResponse
 import re
 
 from django.shortcuts import redirect
-
-
 
 ###### Methods relatives to files own by one user ######
 
@@ -85,9 +83,17 @@ def upload_file(request):
             user= request.user.id
             for f in request.FILES.getlist('file_field'):
                 data =f
-                TemporaryKeyHandler.addFile(user, data.name)
-
-                File(name =  data.name,
+                name = data.name
+                i = 0
+                while len(File.objects.filter(user = User.objects.get(id=user),address = request.session['file_address'],name =  name)) != 0:
+                    if i > 0:
+                        name = name[1:]
+                    name = str(i)+name
+                    i += 1
+                print(name)
+                print(TemporaryKeyHandler.addFile(user, name))
+                #print(name)
+                File(name =  name,
                 size = data.size/1000,
                 modification_date = datetime.datetime.now(),
                 file = data,
@@ -108,6 +114,12 @@ def new_directory(request):
         if form.is_valid():
             user = request.user.id
             directory_name = form.cleaned_data['directory_name']
+            i = 0
+            while len(File.objects.filter(user = User.objects.get(id=user),address = request.session['file_address'],name =  directory_name)) != 0:
+                if i > 0:
+                    directory_name = directory_name[:-1]
+                directory_name += str(i)
+                i += 1
             TemporaryKeyHandler.addFile(user, directory_name)
             File(name =  directory_name,
             size = 0,
@@ -125,12 +137,99 @@ def new_directory(request):
 
 @otp_required
 @key_required
+def rename_file(request, pk, name):
+    if request.method == 'POST':
+        print("dans POST")
+        print(pk)
+        print(name)
+        form = RenameForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_name = form.cleaned_data['new_name']
+            print(new_name)
+            i = 0
+            while len(File.objects.filter(user = User.objects.get(id=user),address = request.session['file_address'],name =  new_name)) != 0:
+                if i > 0:
+                    new_name = new_name[1:]
+                new_name = str(i)+new_name
+                i += 1
+            File.objects.filter(pk=pk).update(name = new_name)
+            return redirect('file_list')
+    else:
+        print("dans GET")
+        print(pk)
+        print(name)
+        form = RenameForm()
+    return render(request, 'rename_file.html', {
+        'form': form,
+        'name': name,
+        'pk': pk,
+    })
+
+    
+@otp_required
+@key_required
+def rename_directory(request, pk, name):
+    if request.method == 'POST':
+        print("dans POST")
+        print(pk)
+        print(name)
+        form = RenameForm(request.POST, request.FILES)
+        if form.is_valid():
+            root_file = File.objects.get(pk=pk)
+            root_file.address
+            full_address = root_file.address + "/" + root_file.name
+            my_regex = r"^" + re.escape(full_address) + r".*"
+            subdirectory_files = File.objects.filter(address__regex = my_regex)
+            new_name = form.cleaned_data['new_name']
+            #print(new_name)
+            i = 0
+            user= request.user.id
+            while len(File.objects.filter(user = User.objects.get(id=user),address = request.session['file_address'],name =  new_name)) != 0:
+                if i > 0:
+                    new_name = new_name[1:]
+                new_name = str(i)+new_name
+                i += 1
+            File.objects.filter(pk=pk).update(name = new_name)
+            for file in subdirectory_files:
+                new_address = file.address.split(name)
+                new_address = new_name.join(new_address)
+                print(new_address)
+                print(file.address)
+                File.objects.filter(pk=file.pk).update(address = new_address)
+            return redirect('file_list')
+    else:
+        print("dans GET")
+        print(pk)
+        print(name)
+        form = RenameForm()
+    return render(request, 'rename_file.html', {
+        'form': form,
+        'name': name,
+        'pk': pk,
+    })
+
+@otp_required
+@key_required
 def delete_file(request, pk):
     if request.method == 'POST':
         file = File.objects.get(pk=pk)
         file.delete()
     return redirect('file_list')
 
+@otp_required
+@key_required
+@file_address
+def delete_directory(request, pk):
+    if request.method == 'POST':
+        root_file = File.objects.get(pk=pk)
+        root_file.address
+        full_address = root_file.address + "/" + root_file.name
+        my_regex = r"^" + re.escape(full_address) + r".*"
+        subdirectory_files = File.objects.filter(address__regex = my_regex)
+        for file in subdirectory_files:
+            file.delete()
+        root_file.delete()
+    return redirect('file_list')
 
 
 ###### Methods relatives to shared files ######
