@@ -79,7 +79,7 @@
                   <a class="dropdown-item btn btn-sm" href="{% url 'change_address' file.name %}">
                     Go To
                   </a>
-                  <a class="dropdown-item btn btn-sm" href="{% url 'change_address' file.name %}">
+                  <a class="dropdown-item btn btn-sm" href="{{ file.file.url }}" target="_blank">
                     Download
                   </a>
                   <a class="dropdown-item btn btn-sm" href="{% url 'rename_directory' file.pk file.name %}">

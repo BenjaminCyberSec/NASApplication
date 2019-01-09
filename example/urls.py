@@ -73,6 +73,3 @@ if settings.DEBUG:
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ]
-    #Are we supposed to store the files elswhere than the device since we make a nas application?
-    #if so, put the following line outside of DEBUG
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

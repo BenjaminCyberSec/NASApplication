@@ -36,7 +36,7 @@ from django.forms import formset_factory
 from .emails import Email
 from django.http import JsonResponse
 import re
-
+from pathlib import Path
 from django.shortcuts import redirect
 
 ###### Methods relatives to files own by one user ######
@@ -406,37 +406,17 @@ def EncryptionKey(request, *args, **kwargs):
 @key_required
 def MyFetchView(request, *args, **kwargs):
 
-    def is_url(path):
-        try:
-            URLValidator()(path)
-            return True
-        except ValidationError:
-            return False
-
     path = kwargs.get("path")
 
     if not path:
         raise Http404
-    else:
-        full_path=re.sub('/fetch', '', request.build_absolute_uri())
-    if is_url(full_path):
-        content = requests.get(full_path, stream=True).raw.read()
 
-    else:
+    full_path = Path(settings.SERVER_PATH + path)
 
-        # Normalise the path to strip out naughty attempts
-        full_path = os.path.normpath(full_path).replace(
-            settings.MEDIA_URL, settings.MEDIA_ROOT, 1)
+    if not os.path.exists(full_path): #malicious or deleted
+        raise Http404
 
-        # Evil path request!
-        if not full_path.startswith(settings.MEDIA_ROOT):
-            raise Http404
-
-        # The file requested doesn't exist locally.  A legit 404
-        if not os.path.exists(full_path):
-            raise Http404
-
-        with open(full_path, "rb") as f:
+    with open(full_path, "rb") as f:
             content = f.read()
 
     #This is a shared file
