@@ -423,10 +423,7 @@ def protected_serve(request,  *args, **kwargs):
 
     #This is a shared file
     if re.search("shared_files/",path) :
-        print("keh")
-        print(SharedFile.objects.all()[2].url)
-        print(path)
-        f = SharedFile.objects.filter(url=path) 
+        f = SharedFile.objects.filter(url=settings.MEDIA_URL+path) 
         #page deleted or malicious attempt
         if not f:
             raise Http404
