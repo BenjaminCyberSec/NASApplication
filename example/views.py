@@ -38,6 +38,11 @@ from django.http import JsonResponse
 import re
 
 from django.shortcuts import redirect
+from django.http import FileResponse
+from django.views.decorators.csrf import csrf_exempt
+from importlib import import_module
+
+
 
 
 
@@ -319,15 +324,17 @@ def MyFetchView(request, *args, **kwargs):
     if not path:
         raise Http404
     else:
-        full_path=re.sub('/fetch', '', request.build_absolute_uri())
+        # /!\ if using file server: full_path = MEDIA_ROOT + url where media root is the file server
+        full_path=re.sub('/fetch', '', request.build_absolute_uri()) 
     if is_url(full_path):
-        content = requests.get(full_path, stream=True).raw.read()
+        #/!\ if using file server: content = request.get(full_path, stream=True).raw.read() and let the file server handle prevent anyone from using the url
+        #This has only been done so that the app provided to the teacher is self-suficient while keeping a real architecture 
+        # We prevent anyone to get the encrypted content 
+        content = requests.post(full_path, data={'caller_request':request.session.session_key}, stream=True).raw.read()
 
     else:
-
         # Normalise the path to strip out naughty attempts
-        full_path = os.path.normpath(full_path).replace(
-            settings.MEDIA_URL, settings.MEDIA_ROOT, 1)
+        full_path = os.path.normpath(full_path).replace(settings.MEDIA_URL, settings.MEDIA_ROOT, 1)
 
         # Evil path request!
         if not full_path.startswith(settings.MEDIA_ROOT):
@@ -339,6 +346,7 @@ def MyFetchView(request, *args, **kwargs):
 
         with open(full_path, "rb") as f:
             content = f.read()
+
 
     #This is a shared file
     if re.search("media/shared_files/",path) :
@@ -382,9 +390,66 @@ def MyFetchView(request, *args, **kwargs):
             raise Http404
 
         #the user password is stored in django-session (In django stores data on the server side and abstracts the sending
-        # and receiving of cookies. The content of what the user actually gets is only the session_id.)
+        # and receiving of cookies. The content of what the user actually gets is only the session_id)
         password =  bytes(request.session['key'], 'utf-8')
         content = Cryptographer.decrypted(content,password)
     return HttpResponse(content, content_type= mimetypes.guess_type(path, strict=True)[0] )
 
+
+
+
+#/!\ if using file server: DELETE THIS
+# This is only used in that project so that the code provided to the teacher is self-sufficient!
+# In a real environement the files would be served by something like Appache and we would ensure 
+# that only the django server can download that content
+#Since here django is serving files, we want to prevent any users from downloading the encrypted file
+#so we did this
+@csrf_exempt 
+def protected_serve(request,  *args, **kwargs):
+
+    if request.method == 'GET': #malicious!
+        raise Http404
+
+    path = kwargs.get("path")
+    caller_request = request.POST.get("caller_request")
+
+    if not path or not caller_request: #malicious!
+        raise Http404
+    
+    Session = import_module(settings.SESSION_ENGINE).Session 
+    session =  Session.objects.get(pk=caller_request).get_decoded()
+    print(session)
+    user = User.objects.get(pk=session['_auth_user_id'])
+
+    #This is a shared file
+    if re.search("shared_files/",path) :
+        print("keh")
+        print(SharedFile.objects.all()[2].url)
+        print(path)
+        f = SharedFile.objects.filter(url=path) 
+        #page deleted or malicious attempt
+        if not f:
+            raise Http404
+        else:
+            f = f.get()
+        if not user in f.users.all(): #user is trying to access something he shouldn't
+            raise Http404
+        else:
+            return FileResponse(f.file)
+    #This is a user owned file
+    else:
+        f = File.objects.filter(url=settings.MEDIA_URL+path)
+        if not 'key' in session: #malicious
+            raise Http404
+        #page deleted or malicious attempt
+        if not f:
+            print("not f")
+            raise Http404
+        else:
+            f = f.get()
+
+        if f.user.id != session['auth_user_id']: #user is trying to access something he shouldn't
+            raise Http404
+        else:
+            return FileResponse(f.file)
  

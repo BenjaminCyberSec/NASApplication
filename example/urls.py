@@ -6,7 +6,7 @@ from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from two_factor.urls import urlpatterns as tf_urls
-from .views import file_list, upload_file, delete_file, shared_file_list, upload_shared_file, delete_shared_file,deletion_consent,read_consent,shared_key,new_directory,change_address, go_back
+from .views import file_list, upload_file, delete_file, shared_file_list, upload_shared_file, delete_shared_file,deletion_consent,read_consent,shared_key,new_directory,change_address, go_back, protected_serve
 from .views import (
     ExampleSecretView, HomeView, RegistrationCompleteView, RegistrationView,MyFetchView,EncryptionKey
 )
@@ -28,7 +28,6 @@ urlpatterns = [
     path('shared_files/deletion_consent/<int:pk>/', deletion_consent, name='deletion_consent'),
     path('shared_files/read_consent/<int:pk>/', read_consent, name='read_consent'),
     path('shared_files/shared_key/<int:pk>/', shared_key, name='shared_key'),
-
     path('encryptionkey/', EncryptionKey, name='encryption_key'),
 
     url(
@@ -65,11 +64,16 @@ urlpatterns = [
 
 ]
 
+#/!\delete this line if you are using a file server (which you should)
+#this has been done only so that the code is self-sufficient in the context of this project
+urlpatterns += url(r'^{}(?P<path>.*)$'.format(settings.MEDIA_URL[1:]), protected_serve),
+
+#in a real env, real project use it with this https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html instead
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ]
-    #Are we supposed to store the files elswhere than the device since we make a nas application?
-    #if so, put the following line outside of DEBUG
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    #/!\uncomment this line if using a file server
+    #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
