@@ -16,6 +16,7 @@ except ImportError:
     from urllib import quote as url_encode  # Python 2
 from django.contrib.auth.models import User
 from .settings import MEDIA_URL
+from datetime import datetime
 
 
 
@@ -100,6 +101,17 @@ class File(AbstractBaseFile):
     def __str__(self):
         return self.name
 
+    def rename(self, new_name, user_id, address):
+        i = 0
+        #This while is necessary because of we don't know if name + i already exists
+        while len(File.objects.filter(user = User.objects.get(id=user_id),address = address,name =  new_name)) != 0:
+            if i > 0:
+                new_name = new_name[1:]
+            new_name = str(i)+new_name
+            i += 1
+        self.name = new_name
+        self.save()
+
 #The SharedFile model is used to store shared files
 class SharedFile(AbstractBaseFile):
     fileType = models.CharField(max_length=100)
@@ -117,6 +129,31 @@ class SharedFile(AbstractBaseFile):
         self.url = "%sshared_files/%s" % (MEDIA_URL,self.name)
         super(SharedFile, self).save(*args, **kwargs)
 
+    #The following methods upload a list of shared files and create the corresponding owners
+    #It takes a owners parameter wich is a dictionary owner : [], it fills the list with couple file keys
+    @classmethod
+    def upload_list(cls, file_list,owners,minimum_validation,size):
+        for data in file_list:
+            key = Cryptographer.generateKey()
+            TemporaryKeyHandler.addSharedFile(key,data.name)
+            s=Cryptographer.shareKey(key, minimum_validation,size)
+            i=0
+            for k,v in owners.items():
+                v.append(data.name)
+                v.append(s[i])
+                i+=1
+            sh = SharedFile(name =  data.name,
+            size = data.size/1000,
+            modification_date = datetime.now(),
+            file = data,
+            nb_owners = size,
+            minimum_validation = minimum_validation)
+            sh.save()
+            for user in owners.keys():
+                Owner(user= user,shared_file=sh ).save()
+        return owners
+
+
 #The Owner model is the model use to make a custom m to n relationship between users and sharedfiles 
 # and store the (encrypted) keys of the threshold algorythm as they come 
 # and the intenions of the user (if he has given his key for deletion or for allowing users to download it)
@@ -128,6 +165,28 @@ class Owner(models.Model):
     secret_key_given = models.BinaryField(max_length=130, null=True)#real length is 128
     wants_deletion = models.BooleanField(default=False)
     wants_download = models.BooleanField(default=False)
+
+    def reset(self):
+        self.date_key_given = None
+        self.secret_key_given = None
+        self.wants_deletion = False
+        self.wants_download = False
+        self.save()
+
+    def setKey(self,password):
+        self.date_key_given = datetime.now()
+        self.secret_key_given = Cryptographer.encryptKeyPart(password)
+        self.save()
+
+    def grant_download(self):
+        self.wants_download = True
+        self.save()
+
+    def grant_deletion(self):
+        self.wants_deletion = True
+        self.save()
+
+    
     
 
 

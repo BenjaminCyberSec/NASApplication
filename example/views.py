@@ -29,13 +29,18 @@ from django.http import Http404, HttpResponse
 from django.views.generic import View
 import requests
 from django.contrib.auth.models import User
+from cryptography.fernet import InvalidToken
 
 from django.forms import formset_factory
 from .emails import Email
 from django.http import JsonResponse
 import re
 from pathlib import Path
-from django.shortcuts import redirect
+from django.contrib import messages
+from .message_handler import error, error_page
+from django.core.exceptions import ObjectDoesNotExist
+
+
 
 import zipfile
 import io 
@@ -141,15 +146,7 @@ def rename_file(request, pk, name):
     if request.method == 'POST':
         form = RenameForm(request.POST, request.FILES)
         if form.is_valid():
-            new_name = form.cleaned_data['new_name']
-            i = 0
-            #This while is necessary because of we don't know if name + i already exists
-            while len(File.objects.filter(user = User.objects.get(id=request.user.id),address = request.session['file_address'],name =  new_name)) != 0:
-                if i > 0:
-                    new_name = new_name[1:]
-                new_name = str(i)+new_name
-                i += 1
-            File.objects.filter(pk=pk).update(name = new_name)
+            File.objects.get(pk=pk).rename(form.cleaned_data['new_name'],request.user.id, request.session['file_address'])
             return redirect('file_list')
     else:
         form = RenameForm()
@@ -196,8 +193,11 @@ def rename_directory(request, pk, name):
 @otp_required
 @key_required
 def delete_file(request, pk):
-    if request.method == 'POST':
-        file = File.objects.get(pk=pk)
+    if request.method == 'POST': 
+        try:
+            file = File.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The file has already been deleted', 'file_list')
         file.delete()
     return redirect('file_list')
 
@@ -206,7 +206,10 @@ def delete_file(request, pk):
 @file_address
 def delete_directory(request, pk):
     if request.method == 'POST':
-        root_file = File.objects.get(pk=pk)
+        try:
+            root_file = File.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The folder has already been deleted', 'file_list')
         full_address = root_file.address + "/" + root_file.name
         my_regex = r"^" + re.escape(full_address) + r".*"
         subdirectory_files = File.objects.filter(address__regex = my_regex)
@@ -271,6 +274,10 @@ def download_folder(request, pk):
         
         full_path = Path(settings.SERVER_PATH + path)
         root_file = File.objects.get(pk=pk)
+        try:
+            root_file = File.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The folder has already been deleted', 'file_list')
         root_file.address
         full_address = root_file.address + "/" + root_file.name
         my_regex = r"^" + re.escape(full_address) + r".*"
@@ -303,36 +310,18 @@ def upload_shared_file(request):
                 user = request.user.id
                 owners = {}
                 minimum_validation = form.cleaned_data.get('minimum_validation')
+                if minimum_validation < 2: return error(request, 'The minimum of users minimum to decrypt a shared file is 2')
                 for of in owner_formset:
                     owners[User.objects.filter(username=of.cleaned_data.get('name'))[0]]=[]
                 owners[User.objects.get(id=user)]=[]
                 size = len(owners)
-
-                for data in request.FILES.getlist('file_field'):
-                    key = Cryptographer.generateKey()
-                    TemporaryKeyHandler.addSharedFile(key,data.name)
-                    s=Cryptographer.shareKey(key, minimum_validation,size)
-                    i=0
-                    for k,v in owners.items():
-                        v.append(data.name)
-                        v.append(s[i])
-                        i+=1
-                    sh = SharedFile(name =  data.name,
-                    size = data.size/1000,
-                    modification_date = datetime.now(),
-                    file = data,
-                    nb_owners = size,
-                    minimum_validation = minimum_validation)
-                    sh.save()
-                    for user in owners.keys():
-                        Owner(user= user,shared_file=sh ).save()
+                if size < minimum_validation: return error(request, 'minimum shared requires %s must be lower or equal to the number of owners(you included) %s' % (minimum_validation,size))
+                owners = SharedFile.upload_list(request.FILES.getlist('file_field'),owners,minimum_validation,size)
                 Email.sendKeys(owners)
+                messages.info(request, 'Keys were sent by email and the file was added.')
                 return redirect('shared_file_list')
             except IndexError:
-                status_code = 400
-                message = "The request is not valid."
-                explanation = "You entered a username that is not in use."
-                return JsonResponse({'message':message,'explanation':explanation}, status=status_code)
+                return error(request, 'One of the username entered was unknown')
     else:
         form = SharedFileForm()
         formset = OwnerFormSet()
@@ -343,7 +332,10 @@ def upload_shared_file(request):
 @otp_required
 def delete_shared_file(request, pk):
     if request.method == 'POST':
-        f = SharedFile.objects.get(pk=pk)
+        try:
+            f = SharedFile.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The file has already been deleted', 'shared_file_list')
         if not request.user in f.users.all(): #user is trying to access something he shouldn't
             raise Http404
         key_set = []
@@ -367,10 +359,12 @@ def delete_shared_file(request, pk):
 @otp_required
 def deletion_consent(request, pk):
     if request.method == 'POST':
-        o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
+        try:
+            o = Owner.objects.get(user=request.user.id,shared_file=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The file has already been deleted', 'shared_file_list')
         if o.secret_key_given:
-            o.wants_deletion = True
-            o.save()
+            o.grant_deletion()
         else:
             return redirect('shared_key', pk=pk)
     return redirect('shared_file_list')
@@ -379,10 +373,12 @@ def deletion_consent(request, pk):
 @otp_required
 def read_consent(request, pk):
     if request.method == 'POST':
-        o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
+        try:
+            o = Owner.objects.get(user=request.user.id,shared_file=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The file has been deleted by an other user or session', 'shared_file_list')
         if o.secret_key_given:
-            o.wants_download = True
-            o.save()
+            o.grant_download()
         else:
             return redirect('shared_key', pk=pk)
     return redirect('shared_file_list')
@@ -392,11 +388,9 @@ def shared_key(request, pk):
     if request.method == 'POST':
         form = KeyForm(request.POST, request.FILES)
         if form.is_valid():
-            password= form.cleaned_data['password']
-            o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
-            o.date_key_given = datetime.now()
-            o.secret_key_given = Cryptographer.encryptKeyPart(password)
-            o.save()
+            Owner.objects.get(user=request.user.id,shared_file=pk).setKey( form.cleaned_data['password'])
+            messages.info(request,'sharedkey added')
+            messages.info(request,'you can now give permissions')
             return redirect('shared_file_list')
     else:
         form = KeyForm()
@@ -438,10 +432,9 @@ def EncryptionKey(request, *args, **kwargs):
     if request.method == 'POST':
         form = KeyForm(request.POST, request.FILES)
         if form.is_valid():
-            user= request.user.id
             password= Cryptographer.derive(form.cleaned_data['password'])
             #(Django stores data on the server side and abstracts the sending and receiving of cookies. The content of what the user actually gets is only the session_id.)
-            request.session['key'] = password#.decode("utf-8") #move to connection
+            request.session['key'] = password
             return redirect('file_list')
 
     else:
@@ -453,7 +446,6 @@ def EncryptionKey(request, *args, **kwargs):
 @otp_required
 @key_required
 def MyFetchView(request, *args, **kwargs):
-
     path = kwargs.get("path")
 
     if not path:
@@ -486,8 +478,13 @@ def MyFetchView(request, *args, **kwargs):
                 key_set.append(Cryptographer.decryptKeyPart(owner.secret_key_given))
                 key_nbr+=1
         if key_nbr >= f.minimum_validation:
-            password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
-            content = Cryptographer.decrypted(content,password)
+            try:
+                password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
+                content = Cryptographer.decrypted(content,password)
+            except (InvalidToken,ValueError):
+                for owner in f.owner_set.all():
+                    owner.reset()
+                return error_page(request, 'At least one key is incorrect. All saved keys & permissions will be deleted and each user will have to enter them again','shared_file_list')
         else:
             return render(request, 'lockedfile.html', {
                 'name': f.name,
@@ -498,8 +495,6 @@ def MyFetchView(request, *args, **kwargs):
 
     #This is a user owned file
     else:
-        #print(path)
-        #print(File.objects.all()[0].url)
         f = File.objects.filter(url=path)
         #page deleted or malicious attempt
         if not f:
@@ -513,7 +508,10 @@ def MyFetchView(request, *args, **kwargs):
         #the user password is stored in django-session (In django stores data on the server side and abstracts the sending
         # and receiving of cookies. The content of what the user actually gets is only the session_id.)
         password =  bytes(request.session['key'], 'utf-8')
-        content = Cryptographer.decrypted(content,password)
+        try:
+            content = Cryptographer.decrypted(content,password)
+        except InvalidToken:
+                return error_page(request, 'The key you previously entered doesn\'t match the one used when you uploaded this file. Please disconnect and enter the proper password.','file_list')
     return HttpResponse(content, content_type= mimetypes.guess_type(path, strict=True)[0] )
 
  
