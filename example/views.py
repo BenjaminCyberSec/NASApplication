@@ -144,15 +144,7 @@ def rename_file(request, pk, name):
     if request.method == 'POST':
         form = RenameForm(request.POST, request.FILES)
         if form.is_valid():
-            new_name = form.cleaned_data['new_name']
-            i = 0
-            #This while is necessary because of we don't know if name + i already exists
-            while len(File.objects.filter(user = User.objects.get(id=request.user.id),address = request.session['file_address'],name =  new_name)) != 0:
-                if i > 0:
-                    new_name = new_name[1:]
-                new_name = str(i)+new_name
-                i += 1
-            File.objects.filter(pk=pk).update(name = new_name)
+            File.objects.get(pk=pk).rename(form.cleaned_data['new_name'],request.user.id, request.session['file_address'])
             return redirect('file_list')
     else:
         form = RenameForm()

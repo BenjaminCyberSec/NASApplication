@@ -100,6 +100,17 @@ class File(AbstractBaseFile):
     def __str__(self):
         return self.name
 
+    def rename(self, new_name, user_id, address):
+        i = 0
+        #This while is necessary because of we don't know if name + i already exists
+        while len(File.objects.filter(user = User.objects.get(id=user_id),address = address,name =  new_name)) != 0:
+            if i > 0:
+                new_name = new_name[1:]
+            new_name = str(i)+new_name
+            i += 1
+        self.name = new_name
+        self.save()
+
 #The SharedFile model is used to store shared files
 class SharedFile(AbstractBaseFile):
     fileType = models.CharField(max_length=100)
