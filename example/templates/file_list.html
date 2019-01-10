@@ -46,10 +46,10 @@
                   Actions
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item btn btn-sm" href="{{ file.file.url }}">
+                  <a class="dropdown-item btn btn-sm" href="{{ file.file.url }}" target="_blank">
                     Download
                   </a>
-                  <a class="dropdown-item btn btn-sm" href="{% url 'rename_file' file.pk file.name %}">
+                  <a class="dropdown-item btn btn-sm" href="{% url 'rename_file' file.pk file.name %}" target="_blank">
                     Rename
                   </a>
                 </div>
@@ -76,13 +76,13 @@
                   Actions
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item btn btn-sm" href="{% url 'change_address' file.name %}">
+                  <a class="dropdown-item btn btn-sm" href="{% url 'change_address' file.name %}" target="_blank">
                     Go To
                   </a>
-                  <a class="dropdown-item btn btn-sm" href="{{ file.file.url }}" target="_blank">
+                  <a class="dropdown-item btn btn-sm" href="{{ file.file.url }}" target="_blank" target="_blank">
                     Download
                   </a>
-                  <a class="dropdown-item btn btn-sm" href="{% url 'rename_directory' file.pk file.name %}">
+                  <a class="dropdown-item btn btn-sm" href="{% url 'rename_directory' file.pk file.name %}" target="_blank">
                     Rename
                   </a>
                 </div>

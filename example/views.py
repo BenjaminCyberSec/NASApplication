@@ -89,6 +89,7 @@ def upload_file(request):
                         name = name[1:]
                     name = str(i)+name
                     i += 1
+                data.name = name
                 TemporaryKeyHandler.addFile(user_id, str(data))
                 File(name =  name,
                 size = data.size/1000,
@@ -430,8 +431,8 @@ def MyFetchView(request, *args, **kwargs):
 
     #This is a user owned file
     else:
-        print(path)
-        print(File.objects.all()[0].url)
+        #print(path)
+        #print(File.objects.all()[0].url)
         f = File.objects.filter(url=path)
         #page deleted or malicious attempt
         if not f:
