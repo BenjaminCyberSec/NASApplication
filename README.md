@@ -49,12 +49,22 @@ Apply the migrations:
 python manage.py migrate --run-syncdb
 ```
 
+Create an admin account (you will use it to confirm users)
+
+```bash
+python manage.py createsuperuser
+```
+
 
 Finally, run the development server:
 
 ```bash
 python manage.py runserver
 ```
+
+Localhost: http://127.0.0.1:8000/ (access user pages only)
+Admin url: http://127.0.0.1:8000/admin/registration_validation/ (access admin pages only - default django option have been set unavaible)
+
 
 Note:
 When the project is run locally, django will print mails (use to transmit keys of shared files) on the console.
