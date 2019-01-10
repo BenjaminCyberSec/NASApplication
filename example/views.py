@@ -90,9 +90,7 @@ def upload_file(request):
                         name = name[1:]
                     name = str(i)+name
                     i += 1
-                print(name)
-                print(TemporaryKeyHandler.addFile(user, name))
-                #print(name)
+                TemporaryKeyHandler.addFile(user, name)
                 File(name =  name,
                 size = data.size/1000,
                 modification_date = datetime.datetime.now(),
@@ -139,15 +137,12 @@ def new_directory(request):
 @key_required
 def rename_file(request, pk, name):
     if request.method == 'POST':
-        print("dans POST")
-        print(pk)
-        print(name)
         form = RenameForm(request.POST, request.FILES)
         if form.is_valid():
             new_name = form.cleaned_data['new_name']
-            print(new_name)
             i = 0
-            while len(File.objects.filter(user = User.objects.get(id=user),address = request.session['file_address'],name =  new_name)) != 0:
+            #This while is necessary because of we don't know if name + i already exists
+            while len(File.objects.filter(user = User.objects.get(id=request.user.id),address = request.session['file_address'],name =  new_name)) != 0:
                 if i > 0:
                     new_name = new_name[1:]
                 new_name = str(i)+new_name
@@ -155,9 +150,6 @@ def rename_file(request, pk, name):
             File.objects.filter(pk=pk).update(name = new_name)
             return redirect('file_list')
     else:
-        print("dans GET")
-        print(pk)
-        print(name)
         form = RenameForm()
     return render(request, 'rename_file.html', {
         'form': form,
@@ -170,9 +162,6 @@ def rename_file(request, pk, name):
 @key_required
 def rename_directory(request, pk, name):
     if request.method == 'POST':
-        print("dans POST")
-        print(pk)
-        print(name)
         form = RenameForm(request.POST, request.FILES)
         if form.is_valid():
             root_file = File.objects.get(pk=pk)
@@ -181,7 +170,6 @@ def rename_directory(request, pk, name):
             my_regex = r"^" + re.escape(full_address) + r".*"
             subdirectory_files = File.objects.filter(address__regex = my_regex)
             new_name = form.cleaned_data['new_name']
-            #print(new_name)
             i = 0
             user= request.user.id
             while len(File.objects.filter(user = User.objects.get(id=user),address = request.session['file_address'],name =  new_name)) != 0:
@@ -193,14 +181,9 @@ def rename_directory(request, pk, name):
             for file in subdirectory_files:
                 new_address = file.address.split(name)
                 new_address = new_name.join(new_address)
-                print(new_address)
-                print(file.address)
                 File.objects.filter(pk=file.pk).update(address = new_address)
             return redirect('file_list')
     else:
-        print("dans GET")
-        print(pk)
-        print(name)
         form = RenameForm()
     return render(request, 'rename_file.html', {
         'form': form,

@@ -35,15 +35,15 @@ class TemporaryKeyHandler(object):
     @classmethod
     def getFileKey(cls,file):
         if file in cls._file_cache:
-            user = cls._file_cache[file]
+            user = cls._file_cache.get(file)
             if user in cls._user_cache:
-                return cls._user_cache[user]
+                return cls._user_cache.get(user)
             else:
                 print("session has expired")
                 return False
         else:
             if file in cls._shared_file_cache:
-                return cls._shared_file_cache[file]
+                return cls._shared_file_cache.get(file)
             else:
                 print("unknown issue")
                 return False
