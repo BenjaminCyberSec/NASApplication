@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 import logging
 
-logger = logging.getLogger('_name_')
+logger = logging.getLogger('django')
 
 def error(request, message):
     logger.error('%s :: %s' % (request.user.id,message))

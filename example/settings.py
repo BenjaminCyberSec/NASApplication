@@ -110,23 +110,27 @@ INTERNAL_IPS = ('127.0.0.1',)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': SERVER_PATH + '/logs/all.log',
+            'formatter': 'verbose'
+        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
         },
-        #'file': {
-        #    'class': 'logging.FileHandler',
-        #    'filename': SERVER_PATH + '/logs/all.log',
-        #},
     },
     'loggers': {
-        #'django': {
-        #    'handlers': ['file'],
-        #    'propagate': True,
-        #},
-        'two_factor': {
-            'handlers': ['console'],
+        'django': {
+            'handlers': ['console', 'file'],
             'level': 'INFO',
         }
     }
