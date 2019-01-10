@@ -13,7 +13,7 @@ class TemporaryKeyHandler(object):
     #link a key to an user for the time of the operation
     @classmethod
     def addUser(cls,user,key):
-        print(user)
+        #print(user)
         cls._user_cache[user] = key
 
     #link a file to a user for a very short time 
@@ -34,9 +34,9 @@ class TemporaryKeyHandler(object):
 
     @classmethod
     def getFileKey(cls,file):
-        print(file)
-        print(cls._user_cache)
-        print(cls._file_cache)
+        #print(file)
+        #print(cls._user_cache)
+        #print(cls._file_cache)
         if file in cls._file_cache:
             user = cls._file_cache.get(file)
             if user in cls._user_cache:

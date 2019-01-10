@@ -7,7 +7,6 @@ from django.views.generic import FormView, TemplateView, ListView, CreateView
 from two_factor.views import OTPRequiredMixin
 from two_factor.views.utils import class_view_decorator
 
-
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse_lazy
 from django_otp.decorators import otp_required
@@ -42,6 +41,9 @@ from .message_handler import error, error_page
 from django.core.exceptions import ObjectDoesNotExist
 
 
+
+import zipfile
+import io 
 
 ###### Methods relatives to files own by one user ######
 
@@ -208,6 +210,74 @@ def delete_directory(request, pk):
             root_file = File.objects.get(pk=pk)
         except ObjectDoesNotExist:
             return error_page(request,'The folder has already been deleted', 'file_list')
+        full_address = root_file.address + "/" + root_file.name
+        my_regex = r"^" + re.escape(full_address) + r".*"
+        subdirectory_files = File.objects.filter(address__regex = my_regex)
+        for file in subdirectory_files:
+            file.delete()
+        root_file.delete()
+    return redirect('file_list')
+
+@otp_required
+@key_required
+@file_address
+def download_folder(request, pk):
+    #file.file.url
+    #print("biatch")
+    if request.method == 'GET':
+        root_file = File.objects.get(pk=pk)
+        full_address = root_file.address + "/" + root_file.name
+        my_regex = r"^" + re.escape(full_address) + r".*"
+        subdirectory_files = File.objects.filter(address__regex = my_regex)
+        #print(len(subdirectory_files))
+        """
+        file_paths = []
+        for file in subdirectory_files:
+            if file.category == "File" :
+                files.append(Path(settings.SERVER_PATH + file.file.url))
+        print(file_paths)
+        """
+        compression = zipfile.ZIP_DEFLATED
+        zip_filename = root_file.name + ".zip"
+        print(zip_filename)
+        zf = zipfile.ZipFile(zip_filename, "w") 
+
+        try:
+            # Add file to the zip file
+            # first parameter file to zip, second filename in zip
+            for file in subdirectory_files:
+                if file.category == "File" :
+                    print(file.file.url)
+                    file_url =  file.file.url.split("/")
+                    file_url = file_url[2:]
+                    file_url = "/".join(file_url)
+                    print(file_url)
+                    zf.write(Path(settings.SERVER_PATH + file_url), file.name, compress_type=compression)
+
+        except FileNotFoundError:
+            print("An error occurred")
+        finally:
+            # Don't forget to close the file!
+            zf.close()
+
+        """
+        for file_url in file_urls:
+            file_url = "http://127.0.0.1:8000" + file_url
+            file_response = requests.get(file_url)  
+            print(file_response)
+
+            #if file_response.status_code == 200:
+             #   fdir, fname = os.path.split(filename)
+              #  zip_path = os.path.join(zip_subdir, fname)
+               # zf.write(filename, zip_path)
+
+        
+        full_path = Path(settings.SERVER_PATH + path)
+        root_file = File.objects.get(pk=pk)
+        try:
+            root_file = File.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The folder has already been deleted', 'file_list')
         root_file.address
         full_address = root_file.address + "/" + root_file.name
         my_regex = r"^" + re.escape(full_address) + r".*"
@@ -215,6 +285,7 @@ def delete_directory(request, pk):
         for file in subdirectory_files:
             file.delete()
         root_file.delete()
+        """
     return redirect('file_list')
 
 
