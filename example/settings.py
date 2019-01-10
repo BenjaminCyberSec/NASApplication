@@ -3,6 +3,10 @@ import os
 DEBUG = True
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+
+MEDIA_URL = '/media/'
+
+SERVER_PATH = os.getcwd() + '/example/'
 #PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -107,18 +111,27 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': SERVER_PATH + '/logs/all.log',
+        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
         },
     },
     'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'propagate': True,
+        },
         'two_factor': {
             'handlers': ['console'],
             'level': 'INFO',
         }
     }
 }
+
 
 TWO_FACTOR_CALL_GATEWAY = 'example.gateways.Messages'
 TWO_FACTOR_SMS_GATEWAY = 'example.gateways.Messages'
@@ -149,10 +162,6 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
-
-MEDIA_URL = '/media/'
-
-SERVER_PATH = os.getcwd() + '/example/'
 
 try:
     from .settings_private import *  # noqa

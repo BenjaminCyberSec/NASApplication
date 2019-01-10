@@ -38,6 +38,9 @@ import re
 from pathlib import Path
 from django.shortcuts import redirect
 from django.contrib import messages
+from .message_handler import error
+
+
 
 ###### Methods relatives to files own by one user ######
 
@@ -237,11 +240,12 @@ def upload_shared_file(request):
                 user = request.user.id
                 owners = {}
                 minimum_validation = form.cleaned_data.get('minimum_validation')
+                if minimum_validation < 2: return error(request, 'The minimum of users minimum to decrypt a shared file is 2')
                 for of in owner_formset:
                     owners[User.objects.filter(username=of.cleaned_data.get('name'))[0]]=[]
                 owners[User.objects.get(id=user)]=[]
                 size = len(owners)
-
+                if size < minimum_validation: return error(request, 'minimum shared requires %s must be lower or equal to the number of owners(you included) %s' % (minimum_validation,size))
                 for data in request.FILES.getlist('file_field'):
                     key = Cryptographer.generateKey()
                     TemporaryKeyHandler.addSharedFile(key,data.name)
@@ -261,9 +265,10 @@ def upload_shared_file(request):
                     for user in owners.keys():
                         Owner(user= user,shared_file=sh ).save()
                 Email.sendKeys(owners)
+                messages.info(request, 'Keys were sent by email and the file was added.')
                 return redirect('shared_file_list')
             except IndexError:
-                messages.error(request, 'Document deleted.')
+                return error(request, 'One of the username entered was unknown')
     else:
         form = SharedFileForm()
         formset = OwnerFormSet()
@@ -328,6 +333,7 @@ def shared_key(request, pk):
             o.date_key_given = datetime.now()
             o.secret_key_given = Cryptographer.encryptKeyPart(password)
             o.save()
+            messages.info(request,'sharedkey added')
             return redirect('shared_file_list')
     else:
         form = KeyForm()
