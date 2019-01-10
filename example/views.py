@@ -18,8 +18,9 @@ from .models import File, SharedFile, Owner
 
 from .crypt import Cryptographer
 from .temporary_key_handler import TemporaryKeyHandler
+from datetime import datetime  
+from datetime import timedelta
 
-import datetime
 import mimetypes
 
 import os
@@ -29,8 +30,6 @@ from django.http import Http404, HttpResponse
 from django.views.generic import View
 import requests
 from django.contrib.auth.models import User
-
-from .constants import SESSION_TTL
 
 from django.forms import formset_factory
 from .emails import Email
@@ -80,24 +79,24 @@ def upload_file(request):
     if request.method == 'POST':
         form = FileForm(request.POST, request.FILES)
         if form.is_valid():
-            user= request.user.id
+            user_id= request.user.id
             for f in request.FILES.getlist('file_field'):
                 data =f
                 name = data.name
                 i = 0
-                while len(File.objects.filter(user = User.objects.get(id=user),address = request.session['file_address'],name =  name)) != 0:
+                while len(File.objects.filter(user = User.objects.get(id=user_id),address = request.session['file_address'],name =  name)) != 0:
                     if i > 0:
                         name = name[1:]
                     name = str(i)+name
                     i += 1
-                TemporaryKeyHandler.addFile(user, name)
+                TemporaryKeyHandler.addFile(user_id, str(data))
                 File(name =  name,
                 size = data.size/1000,
-                modification_date = datetime.datetime.now(),
+                modification_date = datetime.now(),
                 file = data,
                 category = "File",
                 address = request.session['file_address'],
-                user = User.objects.get(id=user)).save()
+                user = User.objects.get(id=user_id)).save()
             return redirect('file_list')
     else:
         form = FileForm()
@@ -121,7 +120,7 @@ def new_directory(request):
             TemporaryKeyHandler.addFile(user, directory_name)
             File(name =  directory_name,
             size = 0,
-            modification_date = datetime.datetime.now(),
+            modification_date = datetime.now(),
             file = 0,
             category = "Directory",
             address = request.session['file_address'],
@@ -252,7 +251,7 @@ def upload_shared_file(request):
                         i+=1
                     sh = SharedFile(name =  data.name,
                     size = data.size/1000,
-                    modification_date = datetime.datetime.now(),
+                    modification_date = datetime.now(),
                     file = data,
                     nb_owners = size,
                     minimum_validation = minimum_validation)
@@ -327,7 +326,7 @@ def shared_key(request, pk):
         if form.is_valid():
             password= form.cleaned_data['password']
             o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
-            o.date_key_given = datetime.datetime.now()
+            o.date_key_given = datetime.now()
             o.secret_key_given = Cryptographer.encryptKeyPart(password)
             o.save()
             return redirect('shared_file_list')
@@ -375,8 +374,6 @@ def EncryptionKey(request, *args, **kwargs):
             password= Cryptographer.derive(form.cleaned_data['password'])
             #(Django stores data on the server side and abstracts the sending and receiving of cookies. The content of what the user actually gets is only the session_id.)
             request.session['key'] = password#.decode("utf-8") #move to connection
-            request.session.set_expiry(SESSION_TTL)
-            TemporaryKeyHandler.addUser(user,password) #move to connection
             return redirect('file_list')
 
     else:
@@ -433,6 +430,8 @@ def MyFetchView(request, *args, **kwargs):
 
     #This is a user owned file
     else:
+        print(path)
+        print(File.objects.all()[0].url)
         f = File.objects.filter(url=path)
         #page deleted or malicious attempt
         if not f:
