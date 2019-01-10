@@ -37,6 +37,7 @@ from django.http import JsonResponse
 import re
 from pathlib import Path
 from django.shortcuts import redirect
+from django.contrib import messages
 
 ###### Methods relatives to files own by one user ######
 
@@ -261,10 +262,7 @@ def upload_shared_file(request):
                 Email.sendKeys(owners)
                 return redirect('shared_file_list')
             except IndexError:
-                status_code = 400
-                message = "The request is not valid."
-                explanation = "You entered a username that is not in use."
-                return JsonResponse({'message':message,'explanation':explanation}, status=status_code)
+                messages.error(request, 'Document deleted.')
     else:
         form = SharedFileForm()
         formset = OwnerFormSet()
