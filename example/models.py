@@ -16,6 +16,7 @@ except ImportError:
     from urllib import quote as url_encode  # Python 2
 from django.contrib.auth.models import User
 from .settings import MEDIA_URL
+from datetime import datetime
 
 
 
@@ -128,6 +129,31 @@ class SharedFile(AbstractBaseFile):
         self.url = "%sshared_files/%s" % (MEDIA_URL,self.name)
         super(SharedFile, self).save(*args, **kwargs)
 
+    #The following methods upload a list of shared files and create the corresponding owners
+    #It takes a owners parameter wich is a dictionary owner : [], it fills the list with couple file keys
+    @classmethod
+    def upload_list(cls, file_list,owners,minimum_validation,size):
+        for data in file_list:
+            key = Cryptographer.generateKey()
+            TemporaryKeyHandler.addSharedFile(key,data.name)
+            s=Cryptographer.shareKey(key, minimum_validation,size)
+            i=0
+            for k,v in owners.items():
+                v.append(data.name)
+                v.append(s[i])
+                i+=1
+            sh = SharedFile(name =  data.name,
+            size = data.size/1000,
+            modification_date = datetime.now(),
+            file = data,
+            nb_owners = size,
+            minimum_validation = minimum_validation)
+            sh.save()
+            for user in owners.keys():
+                Owner(user= user,shared_file=sh ).save()
+        return owners
+
+
 #The Owner model is the model use to make a custom m to n relationship between users and sharedfiles 
 # and store the (encrypted) keys of the threshold algorythm as they come 
 # and the intenions of the user (if he has given his key for deletion or for allowing users to download it)
@@ -146,6 +172,21 @@ class Owner(models.Model):
         self.wants_deletion = False
         self.wants_download = False
         self.save()
+
+    def setKey(self,password):
+        self.date_key_given = datetime.now()
+        self.secret_key_given = Cryptographer.encryptKeyPart(password)
+        self.save()
+
+    def grant_download(self):
+        self.wants_download = True
+        self.save()
+
+    def grant_deletion(self):
+        self.wants_deletion = True
+        self.save()
+
+    
     
 
 

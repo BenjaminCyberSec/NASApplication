@@ -245,24 +245,7 @@ def upload_shared_file(request):
                 owners[User.objects.get(id=user)]=[]
                 size = len(owners)
                 if size < minimum_validation: return error(request, 'minimum shared requires %s must be lower or equal to the number of owners(you included) %s' % (minimum_validation,size))
-                for data in request.FILES.getlist('file_field'):
-                    key = Cryptographer.generateKey()
-                    TemporaryKeyHandler.addSharedFile(key,data.name)
-                    s=Cryptographer.shareKey(key, minimum_validation,size)
-                    i=0
-                    for k,v in owners.items():
-                        v.append(data.name)
-                        v.append(s[i])
-                        i+=1
-                    sh = SharedFile(name =  data.name,
-                    size = data.size/1000,
-                    modification_date = datetime.now(),
-                    file = data,
-                    nb_owners = size,
-                    minimum_validation = minimum_validation)
-                    sh.save()
-                    for user in owners.keys():
-                        Owner(user= user,shared_file=sh ).save()
+                owners = SharedFile.upload_list(request.FILES.getlist('file_field'),owners,minimum_validation,size)
                 Email.sendKeys(owners)
                 messages.info(request, 'Keys were sent by email and the file was added.')
                 return redirect('shared_file_list')
@@ -306,12 +289,11 @@ def delete_shared_file(request, pk):
 def deletion_consent(request, pk):
     if request.method == 'POST':
         try:
-            o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
+            o = Owner.objects.get(user=request.user.id,shared_file=pk)
         except ObjectDoesNotExist:
             return error_page(request,'The file has already been deleted', 'shared_file_list')
         if o.secret_key_given:
-            o.wants_deletion = True
-            o.save()
+            o.grant_deletion()
         else:
             return redirect('shared_key', pk=pk)
     return redirect('shared_file_list')
@@ -320,10 +302,12 @@ def deletion_consent(request, pk):
 @otp_required
 def read_consent(request, pk):
     if request.method == 'POST':
-        o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
+        try:
+            o = Owner.objects.get(user=request.user.id,shared_file=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The file has been deleted by an other user or session', 'shared_file_list')
         if o.secret_key_given:
-            o.wants_download = True
-            o.save()
+            o.grant_download()
         else:
             return redirect('shared_key', pk=pk)
     return redirect('shared_file_list')
@@ -333,11 +317,7 @@ def shared_key(request, pk):
     if request.method == 'POST':
         form = KeyForm(request.POST, request.FILES)
         if form.is_valid():
-            password= form.cleaned_data['password']
-            o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
-            o.date_key_given = datetime.now()
-            o.secret_key_given = Cryptographer.encryptKeyPart(password)
-            o.save()
+            Owner.objects.get(user=request.user.id,shared_file=pk).setKey( form.cleaned_data['password'])
             messages.info(request,'sharedkey added')
             messages.info(request,'you can now give permissions')
             return redirect('shared_file_list')
@@ -395,7 +375,6 @@ def EncryptionKey(request, *args, **kwargs):
 @otp_required
 @key_required
 def MyFetchView(request, *args, **kwargs):
-
     path = kwargs.get("path")
 
     if not path:
