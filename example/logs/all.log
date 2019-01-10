@@ -1,0 +1,113 @@
+INFO 2019-01-11 00:09:02,812 basehttp 18464 13988 "GET / HTTP/1.1" 200 13128
+INFO 2019-01-11 00:09:04,994 basehttp 18464 20032 "GET /files/list/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:09:05,236 basehttp 18464 19980 "GET /account/login/?next=/files/list/ HTTP/1.1" 200 11871
+INFO 2019-01-11 00:09:07,357 basehttp 18464 21228 "POST /account/login/?next=/files/list/ HTTP/1.1" 200 12192
+INFO 2019-01-11 00:09:17,757 basehttp 18464 18684 "POST /account/login/?next=/files/list/ HTTP/1.1" 200 12193
+INFO 2019-01-11 00:09:20,294 basehttp 18464 20088 "POST /account/login/?next=/files/list/ HTTP/1.1" 200 12193
+INFO 2019-01-11 00:09:26,602 basehttp 18464 16964 "GET /admin/registration_validation/ HTTP/1.1" 200 18192
+INFO 2019-01-11 00:09:30,329 basehttp 18464 20944 "GET /admin/registration_validation/ HTTP/1.1" 200 18192
+INFO 2019-01-11 00:09:42,724 basehttp 18464 19884 "POST /account/login/?next=/files/list/ HTTP/1.1" 200 11740
+INFO 2019-01-11 00:09:51,272 basehttp 18464 552 "POST /account/login/?next=/files/list/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:09:51,350 basehttp 18464 20756 "GET /files/list/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:09:51,367 basehttp 18464 8044 "GET /encryptionkey HTTP/1.1" 301 0
+INFO 2019-01-11 00:09:51,532 basehttp 18464 1548 "GET /encryptionkey/ HTTP/1.1" 200 12986
+INFO 2019-01-11 00:09:58,259 basehttp 18464 20576 "POST /encryptionkey/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:09:58,549 basehttp 18464 19596 "GET /files/list/ HTTP/1.1" 200 20491
+INFO 2019-01-11 00:10:03,279 basehttp 18464 18968 "POST /files/delete_file/22/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:10:03,548 basehttp 18464 19660 "GET /files/list/ HTTP/1.1" 200 19211
+INFO 2019-01-11 00:10:09,355 basehttp 18464 3848 "GET /files/rename_directory/12/1bob/ HTTP/1.1" 200 12528
+INFO 2019-01-11 00:10:15,868 basehttp 18464 11356 "POST /files/rename_directory/12/1bob/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:10:16,085 basehttp 18464 2836 "GET /files/list/ HTTP/1.1" 200 19208
+WARNING 2019-01-11 00:22:06,067 log 21076 10164 Forbidden (CSRF token missing or incorrect.): /account/login/
+WARNING 2019-01-11 00:22:06,144 basehttp 21076 10164 "POST /account/login/ HTTP/1.1" 403 11329
+INFO 2019-01-11 00:22:10,833 basehttp 21076 9504 "GET /account/login/ HTTP/1.1" 200 11873
+INFO 2019-01-11 00:22:12,004 basehttp 21076 14388 "GET / HTTP/1.1" 200 13174
+INFO 2019-01-11 00:22:53,699 basehttp 21076 19368 "GET /account/logout/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:22:53,792 basehttp 21076 20300 "GET / HTTP/1.1" 200 12904
+INFO 2019-01-11 00:22:55,531 basehttp 21076 20088 "GET /account/login/ HTTP/1.1" 200 11875
+INFO 2019-01-11 00:23:00,709 basehttp 21076 6648 "POST /account/login/ HTTP/1.1" 200 12191
+INFO 2019-01-11 00:23:05,758 basehttp 21076 9460 "POST /account/login/ HTTP/1.1" 200 12191
+INFO 2019-01-11 00:23:19,113 basehttp 21076 19476 "POST /account/login/ HTTP/1.1" 200 11740
+INFO 2019-01-11 00:23:27,775 basehttp 21076 12148 "POST /account/login/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:23:28,252 basehttp 21076 7648 "GET /account/two_factor/ HTTP/1.1" 200 13128
+INFO 2019-01-11 00:23:31,259 basehttp 21076 11836 "GET /shared_files/ HTTP/1.1" 200 15171
+INFO 2019-01-11 00:23:34,776 basehttp 21076 19936 "GET /shared_files/upload/ HTTP/1.1" 200 14369
+INFO 2019-01-11 00:23:34,797 basehttp 21076 6172 "GET /static/js/upload_shared_file.js HTTP/1.1" 200 2104
+ERROR 2019-01-11 00:23:51,917 log 21076 1268 Internal Server Error: /shared_files/upload/
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\shared_file_views.py", line 65, in upload_shared_file
+    owners = SharedFile.upload_list(request.FILES.getlist('file_field'),owners,minimum_validation,size)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\models.py", line 139, in upload_list
+    data.name = cls.find_name(data.name)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\models.py", line 161, in find_name
+    name = data.name
+NameError: name 'data' is not defined
+ERROR 2019-01-11 00:23:52,036 basehttp 21076 1268 "POST /shared_files/upload/ HTTP/1.1" 500 94333
+INFO 2019-01-11 00:24:43,431 basehttp 11892 21304 "POST /shared_files/upload/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:24:43,790 basehttp 11892 13932 "GET /shared_files/ HTTP/1.1" 200 16647
+INFO 2019-01-11 00:24:59,627 basehttp 11892 12432 "GET /shared_files/upload/ HTTP/1.1" 200 14369
+INFO 2019-01-11 00:25:17,662 basehttp 11892 18648 "POST /shared_files/upload/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:25:18,021 basehttp 11892 2736 "GET /shared_files/ HTTP/1.1" 200 18018
+INFO 2019-01-11 00:25:40,649 basehttp 11892 8044 "POST /shared_files/read_consent/30/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:25:40,785 basehttp 11892 3848 "GET /shared_files/shared_key/30/ HTTP/1.1" 200 12719
+INFO 2019-01-11 00:25:44,331 basehttp 11892 2060 "POST /shared_files/shared_key/30/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:25:44,586 basehttp 11892 18832 "GET /shared_files/ HTTP/1.1" 200 18068
+INFO 2019-01-11 00:25:51,415 basehttp 11892 20484 "POST /shared_files/read_consent/31/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:25:51,642 basehttp 11892 5008 "GET /shared_files/shared_key/31/ HTTP/1.1" 200 12719
+INFO 2019-01-11 00:25:55,688 basehttp 11892 6232 "POST /shared_files/shared_key/31/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:25:56,025 basehttp 11892 14524 "GET /shared_files/ HTTP/1.1" 200 18068
+INFO 2019-01-11 00:25:58,174 basehttp 11892 1808 "POST /shared_files/read_consent/31/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:25:58,531 basehttp 11892 8184 "GET /shared_files/ HTTP/1.1" 200 17621
+INFO 2019-01-11 00:26:12,948 basehttp 11892 9752 "GET /shared_files/ HTTP/1.1" 200 17034
+INFO 2019-01-11 00:26:16,188 basehttp 11892 17956 "POST /shared_files/read_consent/31/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:26:16,380 basehttp 11892 15852 "GET /shared_files/shared_key/31/ HTTP/1.1" 200 12720
+INFO 2019-01-11 00:26:22,550 basehttp 11892 6648 "POST /shared_files/shared_key/31/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:26:22,873 basehttp 11892 5704 "GET /shared_files/ HTTP/1.1" 200 17189
+INFO 2019-01-11 00:26:27,848 basehttp 11892 2156 "POST /shared_files/read_consent/31/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:26:28,173 basehttp 11892 17952 "GET /shared_files/ HTTP/1.1" 200 16742
+INFO 2019-01-11 00:26:31,966 basehttp 11892 21076 "GET /fetch/media/shared_files/1Capture.PNG HTTP/1.1" 200 43375
+INFO 2019-01-11 00:27:27,653 basehttp 4416 3700 "POST /shared_files/31/ HTTP/1.1" 200 12206
+INFO 2019-01-11 00:27:42,243 basehttp 4416 18636 "POST /shared_files/read_consent/30/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:27:42,437 basehttp 4416 14752 "GET /shared_files/shared_key/30/ HTTP/1.1" 200 12720
+INFO 2019-01-11 00:27:47,060 basehttp 4416 4424 "POST /shared_files/shared_key/30/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:27:47,371 basehttp 4416 20832 "GET /shared_files/ HTTP/1.1" 200 16897
+INFO 2019-01-11 00:27:51,283 basehttp 4416 2804 "POST /shared_files/read_consent/30/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:27:51,597 basehttp 4416 18968 "GET /shared_files/ HTTP/1.1" 200 16450
+INFO 2019-01-11 00:27:53,744 basehttp 4416 7076 "GET /fetch/media/shared_files/0Capture.PNG HTTP/1.1" 200 12197
+INFO 2019-01-11 00:28:01,878 basehttp 4416 10260 "POST /shared_files/read_consent/30/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:28:02,233 basehttp 4416 13964 "GET /shared_files/ HTTP/1.1" 200 17330
+ERROR 2019-01-11 00:28:08,052 message_handler 4416 800 5 :: At least one key is incorrect. All saved keys & permissions will be deleted and each user will have to enter them again
+INFO 2019-01-11 00:28:08,055 basehttp 4416 800 "GET /fetch/media/shared_files/0Capture.PNG HTTP/1.1" 302 0
+INFO 2019-01-11 00:28:08,395 basehttp 4416 10652 "GET /shared_files/ HTTP/1.1" 200 16925
+INFO 2019-01-11 00:40:54,941 basehttp 21144 2660 "GET /shared_files/ HTTP/1.1" 200 16742
+INFO 2019-01-11 00:40:56,655 basehttp 21144 17972 "GET /files/list/ HTTP/1.1" 200 19208
+INFO 2019-01-11 00:40:59,008 basehttp 21144 1788 "GET /files/newDirectory/ HTTP/1.1" 200 12571
+INFO 2019-01-11 00:41:03,037 basehttp 21144 16940 "POST /files/newDirectory/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:41:03,302 basehttp 21144 2928 "GET /files/list/ HTTP/1.1" 200 20642
+INFO 2019-01-11 00:41:11,855 basehttp 21144 20648 "GET /files/rename_directory/12/ben/ HTTP/1.1" 200 12527
+INFO 2019-01-11 00:41:17,081 basehttp 21144 17780 "POST /files/rename_directory/12/ben/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:41:17,275 basehttp 21144 20344 "GET /files/list/ HTTP/1.1" 200 20642
+INFO 2019-01-11 00:41:22,842 basehttp 21144 1808 "GET /files/newDirectory/ HTTP/1.1" 200 12571
+INFO 2019-01-11 00:41:27,813 basehttp 21144 10820 "POST /files/newDirectory/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:41:28,064 basehttp 21144 10260 "GET /files/list/ HTTP/1.1" 200 22076
+INFO 2019-01-11 00:41:36,560 basehttp 21144 20276 "GET /files/rename_directory/26/jean/ HTTP/1.1" 200 12528
+INFO 2019-01-11 00:41:41,537 basehttp 21144 7072 "POST /files/rename_directory/26/jean/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:41:41,726 basehttp 21144 1820 "GET /files/list/ HTTP/1.1" 200 22073
+INFO 2019-01-11 00:42:31,000 basehttp 21144 19720 "GET /files/rename_file/23/bob/ HTTP/1.1" 200 12522
+INFO 2019-01-11 00:42:36,793 basehttp 21144 21156 "POST /files/rename_file/23/bob/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:42:37,037 basehttp 21144 19676 "GET /files/list/ HTTP/1.1" 200 22075
+INFO 2019-01-11 00:42:44,111 basehttp 21144 18988 "GET /files/rename_directory/25/ben0/ HTTP/1.1" 200 12528
+INFO 2019-01-11 00:42:49,424 basehttp 21144 17780 "POST /files/rename_directory/25/ben0/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:42:49,666 basehttp 21144 20680 "GET /files/list/ HTTP/1.1" 200 22072
+INFO 2019-01-11 00:43:30,628 basehttp 14380 13172 "GET /files/list/ HTTP/1.1" 200 22072
+INFO 2019-01-11 00:43:35,756 basehttp 14380 20892 "GET /files/rename_directory/25/ben/ HTTP/1.1" 200 12527
+INFO 2019-01-11 00:43:40,644 basehttp 14380 17964 "POST /files/rename_directory/25/ben/ HTTP/1.1" 302 0
+INFO 2019-01-11 00:43:40,861 basehttp 14380 12196 "GET /files/list/ HTTP/1.1" 200 22075

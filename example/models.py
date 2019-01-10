@@ -112,6 +112,8 @@ class File(AbstractBaseFile):
         self.name = new_name
         self.save()
 
+    
+
 #The SharedFile model is used to store shared files
 class SharedFile(AbstractBaseFile):
     fileType = models.CharField(max_length=100)
@@ -134,6 +136,7 @@ class SharedFile(AbstractBaseFile):
     @classmethod
     def upload_list(cls, file_list,owners,minimum_validation,size):
         for data in file_list:
+            data.name = cls.find_name(data.name)
             key = Cryptographer.generateKey()
             TemporaryKeyHandler.addSharedFile(key,data.name)
             s=Cryptographer.shareKey(key, minimum_validation,size)
@@ -152,6 +155,16 @@ class SharedFile(AbstractBaseFile):
             for user in owners.keys():
                 Owner(user= user,shared_file=sh ).save()
         return owners
+    
+    @classmethod
+    def find_name(cls,name):
+        i = 0
+        while len(SharedFile.objects.filter(name =  name)) != 0:
+            if i > 0:
+                name = name[1:]
+            name = str(i)+name
+            i += 1
+        return name
 
 
 #The Owner model is the model use to make a custom m to n relationship between users and sharedfiles 

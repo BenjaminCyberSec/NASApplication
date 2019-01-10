@@ -7,9 +7,19 @@ from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 from two_factor.urls import urlpatterns as tf_urls
-from .views import file_list, upload_file, delete_file,delete_directory,rename_file,rename_directory,download_folder, shared_file_list, upload_shared_file, delete_shared_file,deletion_consent,read_consent,shared_key,new_directory,change_address,go_back
+
+#Import common views
 from .views import (
     ExampleSecretView, HomeView, RegistrationCompleteView, RegistrationView,MyFetchView,EncryptionKey
+)
+#Import user owned files related views
+from .file_views import (
+     file_list, upload_file, delete_file,delete_directory,rename_file,rename_directory, 
+     download_folder,new_directory,change_address,go_back
+)
+#Import shared files related views
+from .shared_file_views import (
+    shared_file_list, upload_shared_file, delete_shared_file,deletion_consent,read_consent,shared_key
 )
 
 
