@@ -1,5 +1,4 @@
 from expiringdict import ExpiringDict
-from .constants import SESSION_TTL
 
 
 #This class is used by the custom wrapper of FieldFile, namely EncryptedFile
@@ -7,13 +6,14 @@ from .constants import SESSION_TTL
 #The keys are stored for a short amount of time in this class 
 class TemporaryKeyHandler(object):
     
-    _user_cache = ExpiringDict(max_len=500, max_age_seconds=SESSION_TTL) #user : key
+    _user_cache = ExpiringDict(max_len=500, max_age_seconds=10) #user : key
     _file_cache = ExpiringDict(max_len=1000, max_age_seconds=10) #file : user
     _shared_file_cache = ExpiringDict(max_len=500, max_age_seconds=10) #file : group_key
   
-    #link a key to an user for the time of the session
+    #link a key to an user for the time of the operation
     @classmethod
     def addUser(cls,user,key):
+        print(user)
         cls._user_cache[user] = key
 
     #link a file to a user for a very short time 
@@ -34,6 +34,9 @@ class TemporaryKeyHandler(object):
 
     @classmethod
     def getFileKey(cls,file):
+        print(file)
+        print(cls._user_cache)
+        print(cls._file_cache)
         if file in cls._file_cache:
             user = cls._file_cache.get(file)
             if user in cls._user_cache:

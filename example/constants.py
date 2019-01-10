@@ -28,4 +28,3 @@ KEY_SALT = get_bytes(_get_setting("KEY_SALT"))
 KEY_PASSWORD = get_bytes(_get_setting("KEY_PASSWORD")) 
 
 
-SESSION_TTL = 90000
