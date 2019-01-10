@@ -1,0 +1,679 @@
+"GET /files/list/ HTTP/1.1" 200 23183
+"GET /account/logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 12904
+"GET /account/login/ HTTP/1.1" 200 11875
+"POST /account/login/ HTTP/1.1" 200 11740
+"POST /account/login/ HTTP/1.1" 302 0
+"GET /account/two_factor/ HTTP/1.1" 200 13129
+"GET / HTTP/1.1" 200 13174
+"GET /account/register/ HTTP/1.1" 200 11655
+"GET /shared_files/ HTTP/1.1" 200 12426
+"GET /files/list/ HTTP/1.1" 302 0
+"GET /encryptionkey/ HTTP/1.1" 200 12986
+"GET /shared_files/ HTTP/1.1" 200 12426
+"GET /files/list/ HTTP/1.1" 302 0
+"GET /encryptionkey/ HTTP/1.1" 200 12986
+"POST /encryptionkey/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 23183
+Not Found: /fetch/media/files/users/ben/Capture_5nrG8d8.PNG
+"GET /fetch/media/files/users/ben/Capture_5nrG8d8.PNG HTTP/1.1" 404 10570
+"GET /files/upload/ HTTP/1.1" 200 12576
+"POST /files/upload/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 24495
+Not Found: /fetch/media/files/users/ben/Capture_X9Nte91.PNG
+"GET /fetch/media/files/users/ben/Capture_X9Nte91.PNG HTTP/1.1" 404 10570
+Internal Server Error: /fetch/media/files/users/ben/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 106, in _verify_signature
+    h.verify(data[-32:])
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\primitives\hmac.py", line 69, in verify
+    ctx.verify(signature)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\backends\openssl\hmac.py", line 73, in verify
+    raise InvalidSignature("Signature did not match digest.")
+cryptography.exceptions.InvalidSignature: Signature did not match digest.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 452, in MyFetchView
+    content = Cryptographer.decrypted(content,password)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 47, in decrypted
+    return fernet.decrypt(content)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 75, in decrypt
+    return self._decrypt_data(data, timestamp, ttl)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 119, in _decrypt_data
+    self._verify_signature(data)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 108, in _verify_signature
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 500 146834
+"POST /files/delete_file/21/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 23183
+"POST /files/delete_file/17/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 21864
+"POST /files/delete_file/18/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 20545
+"POST /files/delete_file/19/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 19226
+"POST /files/delete_file/20/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 17907
+"POST /files/delete_file/14/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 16598
+"GET /files/upload/ HTTP/1.1" 200 12576
+"POST /files/upload/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 17907
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 200 43375
+"GET /files/upload/ HTTP/1.1" 200 12576
+"POST /files/upload/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 19219
+"GET /fetch/media/files/users/ben/0Capture.PNG HTTP/1.1" 200 43375
+"GET /account/logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 12904
+"GET /account/login/ HTTP/1.1" 200 11875
+"POST /account/login/ HTTP/1.1" 200 11740
+"POST /account/login/ HTTP/1.1" 200 12010
+"POST /account/login/ HTTP/1.1" 302 0
+"GET /account/two_factor/ HTTP/1.1" 200 13129
+"GET /files/list/ HTTP/1.1" 302 0
+"GET /encryptionkey/ HTTP/1.1" 200 12986
+"POST /encryptionkey/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 19219
+Internal Server Error: /fetch/media/files/users/ben/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 106, in _verify_signature
+    h.verify(data[-32:])
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\primitives\hmac.py", line 69, in verify
+    ctx.verify(signature)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\backends\openssl\hmac.py", line 73, in verify
+    raise InvalidSignature("Signature did not match digest.")
+cryptography.exceptions.InvalidSignature: Signature did not match digest.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 452, in MyFetchView
+    content = Cryptographer.decrypted(content,password)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 47, in decrypted
+    return fernet.decrypt(content)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 75, in decrypt
+    return self._decrypt_data(data, timestamp, ttl)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 119, in _decrypt_data
+    self._verify_signature(data)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 108, in _verify_signature
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 500 146943
+Internal Server Error: /fetch/media/files/users/ben/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 106, in _verify_signature
+    h.verify(data[-32:])
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\primitives\hmac.py", line 69, in verify
+    ctx.verify(signature)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\backends\openssl\hmac.py", line 73, in verify
+    raise InvalidSignature("Signature did not match digest.")
+cryptography.exceptions.InvalidSignature: Signature did not match digest.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 454, in MyFetchView
+    content = Cryptographer.decrypted(content,password)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 47, in decrypted
+    return fernet.decrypt(content)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 75, in decrypt
+    return self._decrypt_data(data, timestamp, ttl)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 119, in _decrypt_data
+    self._verify_signature(data)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 108, in _verify_signature
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 455, in MyFetchView
+    except InvalidToken:
+NameError: name 'InvalidToken' is not defined
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 500 157239
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+Internal Server Error: /fetch/media/files/users/ben/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 106, in _verify_signature
+    h.verify(data[-32:])
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\primitives\hmac.py", line 69, in verify
+    ctx.verify(signature)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\backends\openssl\hmac.py", line 73, in verify
+    raise InvalidSignature("Signature did not match digest.")
+cryptography.exceptions.InvalidSignature: Signature did not match digest.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 454, in MyFetchView
+    content = Cryptographer.decrypted(content,password)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 47, in decrypted
+    return fernet.decrypt(content)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 75, in decrypt
+    return self._decrypt_data(data, timestamp, ttl)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 119, in _decrypt_data
+    self._verify_signature(data)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 108, in _verify_signature
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 456, in MyFetchView
+    return error_home(request, 'The key you previously entered doesn\'t match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.')
+NameError: name 'error_home' is not defined
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 500 162433
+Internal Server Error: /fetch/media/files/users/ben/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 106, in _verify_signature
+    h.verify(data[-32:])
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\primitives\hmac.py", line 69, in verify
+    ctx.verify(signature)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\backends\openssl\hmac.py", line 73, in verify
+    raise InvalidSignature("Signature did not match digest.")
+cryptography.exceptions.InvalidSignature: Signature did not match digest.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 454, in MyFetchView
+    content = Cryptographer.decrypted(content,password)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 47, in decrypted
+    return fernet.decrypt(content)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 75, in decrypt
+    return self._decrypt_data(data, timestamp, ttl)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 119, in _decrypt_data
+    self._verify_signature(data)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 108, in _verify_signature
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 456, in MyFetchView
+    return error_home(request, 'The key you previously entered doesn\'t match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.')
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\message_handler.py", line 14, in error_home
+    logger.error('%s :: %s' % (request.user.id,message))
+NameError: name 'request' is not defined
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 500 165672
+5 :: The key you previously entered doesn't match the one used when you uploaded this file.<br>Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/Capture.PNG HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 21542
+"GET / HTTP/1.1" 200 13174
+"GET /files/list/ HTTP/1.1" 200 19219
+5 :: The key you previously entered doesn't match the one used when you uploaded this file. Please disconnect and enter the proper password.
+Internal Server Error: /fetch/media/files/users/ben/0Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 106, in _verify_signature
+    h.verify(data[-32:])
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\primitives\hmac.py", line 69, in verify
+    ctx.verify(signature)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\hazmat\backends\openssl\hmac.py", line 73, in verify
+    raise InvalidSignature("Signature did not match digest.")
+cryptography.exceptions.InvalidSignature: Signature did not match digest.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 454, in MyFetchView
+    content = Cryptographer.decrypted(content,password)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 47, in decrypted
+    return fernet.decrypt(content)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 75, in decrypt
+    return self._decrypt_data(data, timestamp, ttl)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 119, in _decrypt_data
+    self._verify_signature(data)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\cryptography\fernet.py", line 108, in _verify_signature
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 456, in MyFetchView
+    return error_page(request, 'The key you previously entered doesn\'t match the one used when you uploaded this file. Please disconnect and enter the proper password.','filelist')
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\message_handler.py", line 16, in error_page
+    return redirect(page)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\shortcuts.py", line 58, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\shortcuts.py", line 148, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\urls\base.py", line 90, in reverse
+    return iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs))
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\urls\resolvers.py", line 622, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'filelist' not found. 'filelist' is not a valid view function or pattern name.
+"GET /fetch/media/files/users/ben/0Capture.PNG HTTP/1.1" 500 178476
+5 :: The key you previously entered doesn't match the one used when you uploaded this file. Please disconnect and enter the proper password.
+"GET /fetch/media/files/users/ben/0Capture.PNG HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 19613
+"GET /shared_files/ HTTP/1.1" 200 12426
+"GET /files/newDirectory/ HTTP/1.1" 200 12570
+"POST /files/newDirectory/ HTTP/1.1" 302 0
+"GET /files/list/ HTTP/1.1" 200 20673
+"GET /files/list/ HTTP/1.1" 200 20673
+"GET / HTTP/1.1" 200 12904
+"GET / HTTP/1.1" 200 12904
+"GET /static/debug_toolbar/img/ajax-loader.gif HTTP/1.1" 200 404
+"GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 14835
+"GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13188
+"GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 41
+"GET /static/debug_toolbar/img/djdt_vertical.png HTTP/1.1" 200 882
+"GET /account/login/ HTTP/1.1" 200 11874
+"GET / HTTP/1.1" 200 12904
+"GET /account/register/ HTTP/1.1" 200 11656
+"POST /account/register/ HTTP/1.1" 302 0
+"GET /account/register/done/ HTTP/1.1" 200 10615
+"GET /account/login/ HTTP/1.1" 200 11874
+"POST /account/login/ HTTP/1.1" 302 0
+"GET /account/two_factor/ HTTP/1.1" 200 12296
+"GET /account/two_factor/setup/ HTTP/1.1" 200 11322
+"POST /account/two_factor/setup/ HTTP/1.1" 200 12367
+"POST /account/two_factor/setup/ HTTP/1.1" 200 11663
+"POST /account/two_factor/setup/ HTTP/1.1" 200 11809
+"POST /account/two_factor/setup/ HTTP/1.1" 302 0
+"GET /account/two_factor/setup/complete/ HTTP/1.1" 200 11031
+"GET /account/two_factor/ HTTP/1.1" 200 13128
+"GET /shared_files/ HTTP/1.1" 200 12424
+"GET /shared_files/upload/ HTTP/1.1" 200 14369
+"GET /static/js/upload_shared_file.js HTTP/1.1" 200 2104
+"POST /shared_files/upload/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13899
+"POST /shared_files/read_consent/26/ HTTP/1.1" 302 0
+"GET /shared_files/shared_key/26/ HTTP/1.1" 200 12718
+"POST /shared_files/shared_key/26/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13867
+"GET / HTTP/1.1" 200 13173
+"GET /shared_files/ HTTP/1.1" 200 13795
+"POST /shared_files/read_consent/26/ HTTP/1.1" 302 0
+"GET /shared_files/shared_key/26/ HTTP/1.1" 200 12719
+"POST /shared_files/shared_key/26/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13868
+"POST /shared_files/read_consent/26/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13503
+"GET /fetch/media/shared_files/Capture.PNG HTTP/1.1" 200 12195
+"POST /shared_files/read_consent/26/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13502
+"GET /fetch/media/shared_files/Capture.PNG HTTP/1.1" 200 43375
+"POST /shared_files/26/ HTTP/1.1" 200 12204
+"POST /shared_files/deletion_consent/26/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13206
+"POST /shared_files/deletion_consent/26/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13207
+"POST /shared_files/26/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 12425
+Not Found: /fetch/media/shared_files/Capture.PNG
+"GET /fetch/media/shared_files/Capture.PNG HTTP/1.1" 404 10547
+Internal Server Error: /shared_files/26/
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 282, in delete_shared_file
+    f = SharedFile.objects.get(pk=pk)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\db\models\query.py", line 399, in get
+    self.model._meta.object_name
+example.models.SharedFile.DoesNotExist: SharedFile matching query does not exist.
+"POST /shared_files/26/ HTTP/1.1" 500 91415
+Internal Server Error: /shared_files/26/
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 283, in delete_shared_file
+    f = SharedFile.objects.get(pk=pk)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\db\models\query.py", line 399, in get
+    self.model._meta.object_name
+example.models.SharedFile.DoesNotExist: SharedFile matching query does not exist.
+"POST /shared_files/26/ HTTP/1.1" 500 91183
+Internal Server Error: /shared_files/26/
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 283, in delete_shared_file
+    f = SharedFile.objects.get(pk=pk)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\db\models\query.py", line 399, in get
+    self.model._meta.object_name
+example.models.SharedFile.DoesNotExist: SharedFile matching query does not exist.
+"POST /shared_files/26/ HTTP/1.1" 500 91183
+6 :: The file has already been deleted
+"POST /shared_files/26/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 12518
+"GET /shared_files/upload/ HTTP/1.1" 200 14369
+"POST /shared_files/upload/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13899
+"GET /shared_files/ HTTP/1.1" 200 13795
+"POST /shared_files/read_consent/27/ HTTP/1.1" 302 0
+"GET /shared_files/shared_key/27/ HTTP/1.1" 200 12718
+"POST /shared_files/shared_key/27/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13867
+"POST /shared_files/read_consent/27/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13502
+"POST /shared_files/read_consent/27/ HTTP/1.1" 302 0
+"GET /shared_files/shared_key/27/ HTTP/1.1" 200 12719
+"POST /shared_files/shared_key/27/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13868
+"POST /shared_files/read_consent/27/ HTTP/1.1" 302 0
+"GET /shared_files/ HTTP/1.1" 200 13503
+Internal Server Error: /fetch/media/shared_files/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 11, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 439, in MyFetchView
+    password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 63, in recoverKey
+    return SecretSharer.recover_secret(shares)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 122, in recover_secret
+    points.append(share_string_to_point(share, cls.share_charset))
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 89, in share_string_to_point
+    x_string, y_string = share_string.split('-')
+ValueError: not enough values to unpack (expected 2, got 1)
+"GET /fetch/media/shared_files/Capture.PNG HTTP/1.1" 500 105092
+"GET /shared_files/ HTTP/1.1" 200 13503
+Internal Server Error: /fetch/media/shared_files/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 11, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 440, in MyFetchView
+    password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 63, in recoverKey
+    return SecretSharer.recover_secret(shares)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 122, in recover_secret
+    points.append(share_string_to_point(share, cls.share_charset))
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 89, in share_string_to_point
+    x_string, y_string = share_string.split('-')
+ValueError: not enough values to unpack (expected 2, got 1)
+"GET /fetch/media/shared_files/Capture.PNG HTTP/1.1" 500 105237
+Internal Server Error: /fetch/media/shared_files/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 11, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 440, in MyFetchView
+    password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 63, in recoverKey
+    return SecretSharer.recover_secret(shares)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 122, in recover_secret
+    points.append(share_string_to_point(share, cls.share_charset))
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 89, in share_string_to_point
+    x_string, y_string = share_string.split('-')
+ValueError: not enough values to unpack (expected 2, got 1)
+"GET /fetch/media/shared_files/Capture.PNG HTTP/1.1" 500 105237
+Internal Server Error: /fetch/media/shared_files/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 11, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 440, in MyFetchView
+    password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 63, in recoverKey
+    return SecretSharer.recover_secret(shares)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 122, in recover_secret
+    points.append(share_string_to_point(share, cls.share_charset))
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 89, in share_string_to_point
+    x_string, y_string = share_string.split('-')
+ValueError: not enough values to unpack (expected 2, got 1)
+"GET /fetch/media/shared_files/Capture.PNG HTTP/1.1" 500 105237
+Internal Server Error: /fetch/media/shared_files/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 11, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 440, in MyFetchView
+    password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 63, in recoverKey
+    return SecretSharer.recover_secret(shares)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 122, in recover_secret
+    points.append(share_string_to_point(share, cls.share_charset))
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 89, in share_string_to_point
+    x_string, y_string = share_string.split('-')
+ValueError: not enough values to unpack (expected 2, got 1)
+"GET /fetch/media/shared_files/Capture.PNG HTTP/1.1" 500 105048
+Internal Server Error: /fetch/media/shared_files/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 11, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 443, in MyFetchView
+    password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 63, in recoverKey
+    return SecretSharer.recover_secret(shares)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 122, in recover_secret
+    points.append(share_string_to_point(share, cls.share_charset))
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 89, in share_string_to_point
+    x_string, y_string = share_string.split('-')
+ValueError: not enough values to unpack (expected 2, got 1)
+"GET /fetch/media/shared_files/Capture.PNG HTTP/1.1" 500 105038
+Internal Server Error: /fetch/media/shared_files/Capture.PNG
+Traceback (most recent call last):
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\decorators.py", line 11, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\views.py", line 443, in MyFetchView
+    password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
+  File "C:\Users\benja\tutorial\clean\NASApplication\example\crypt.py", line 63, in recoverKey
+    return SecretSharer.recover_secret(shares)
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 122, in recover_secret
+    points.append(share_string_to_point(share, cls.share_charset))
+  File "C:\Users\benja\AppData\Local\Programs\Python\Python37-32\lib\site-packages\secretsharing\sharing.py", line 89, in share_string_to_point
+    x_string, y_string = share_string.split('-')
+ValueError: not enough values to unpack (expected 2, got 1)
+"GET /fetch/media/shared_files/Capture.PNG HTTP/1.1" 500 105039

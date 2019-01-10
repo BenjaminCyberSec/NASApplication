@@ -111,20 +111,20 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': SERVER_PATH + '/logs/all.log',
-        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
         },
+        #'file': {
+        #    'class': 'logging.FileHandler',
+        #    'filename': SERVER_PATH + '/logs/all.log',
+        #},
     },
     'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'propagate': True,
-        },
+        #'django': {
+        #    'handlers': ['file'],
+        #    'propagate': True,
+        #},
         'two_factor': {
             'handlers': ['console'],
             'level': 'INFO',

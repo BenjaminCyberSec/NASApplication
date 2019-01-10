@@ -30,15 +30,16 @@ from django.http import Http404, HttpResponse
 from django.views.generic import View
 import requests
 from django.contrib.auth.models import User
+from cryptography.fernet import InvalidToken
 
 from django.forms import formset_factory
 from .emails import Email
 from django.http import JsonResponse
 import re
 from pathlib import Path
-from django.shortcuts import redirect
 from django.contrib import messages
-from .message_handler import error
+from .message_handler import error, error_page
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
@@ -198,8 +199,11 @@ def rename_directory(request, pk, name):
 @otp_required
 @key_required
 def delete_file(request, pk):
-    if request.method == 'POST':
-        file = File.objects.get(pk=pk)
+    if request.method == 'POST': 
+        try:
+            file = File.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The file has already been deleted', 'file_list')
         file.delete()
     return redirect('file_list')
 
@@ -208,7 +212,10 @@ def delete_file(request, pk):
 @file_address
 def delete_directory(request, pk):
     if request.method == 'POST':
-        root_file = File.objects.get(pk=pk)
+        try:
+            root_file = File.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The folder has already been deleted', 'file_list')
         root_file.address
         full_address = root_file.address + "/" + root_file.name
         my_regex = r"^" + re.escape(full_address) + r".*"
@@ -279,7 +286,10 @@ def upload_shared_file(request):
 @otp_required
 def delete_shared_file(request, pk):
     if request.method == 'POST':
-        f = SharedFile.objects.get(pk=pk)
+        try:
+            f = SharedFile.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return error_page(request,'The file has already been deleted', 'shared_file_list')
         if not request.user in f.users.all(): #user is trying to access something he shouldn't
             raise Http404
         key_set = []
@@ -303,7 +313,10 @@ def delete_shared_file(request, pk):
 @otp_required
 def deletion_consent(request, pk):
     if request.method == 'POST':
-        o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
+        try:
+            o = Owner.objects.filter(user=request.user.id,shared_file=pk)[0]
+        except ObjectDoesNotExist:
+            return error_page(request,'The file has already been deleted', 'shared_file_list')
         if o.secret_key_given:
             o.wants_deletion = True
             o.save()
@@ -334,6 +347,7 @@ def shared_key(request, pk):
             o.secret_key_given = Cryptographer.encryptKeyPart(password)
             o.save()
             messages.info(request,'sharedkey added')
+            messages.info(request,'you can now give permissions')
             return redirect('shared_file_list')
     else:
         form = KeyForm()
@@ -375,10 +389,9 @@ def EncryptionKey(request, *args, **kwargs):
     if request.method == 'POST':
         form = KeyForm(request.POST, request.FILES)
         if form.is_valid():
-            user= request.user.id
             password= Cryptographer.derive(form.cleaned_data['password'])
             #(Django stores data on the server side and abstracts the sending and receiving of cookies. The content of what the user actually gets is only the session_id.)
-            request.session['key'] = password#.decode("utf-8") #move to connection
+            request.session['key'] = password
             return redirect('file_list')
 
     else:
@@ -423,8 +436,13 @@ def MyFetchView(request, *args, **kwargs):
                 key_set.append(Cryptographer.decryptKeyPart(owner.secret_key_given))
                 key_nbr+=1
         if key_nbr >= f.minimum_validation:
-            password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
-            content = Cryptographer.decrypted(content,password)
+            try:
+                password =  bytes(Cryptographer.recoverKey(key_set), 'utf-8')
+                content = Cryptographer.decrypted(content,password)
+            except (InvalidToken,ValueError):
+                for owner in f.owner_set.all():
+                    owner.reset()
+                return error_page(request, 'At least one key is incorrect. All saved keys & permissions will be deleted and each user will have to enter them again','shared_file_list')
         else:
             return render(request, 'lockedfile.html', {
                 'name': f.name,
@@ -435,8 +453,6 @@ def MyFetchView(request, *args, **kwargs):
 
     #This is a user owned file
     else:
-        #print(path)
-        #print(File.objects.all()[0].url)
         f = File.objects.filter(url=path)
         #page deleted or malicious attempt
         if not f:
@@ -450,7 +466,10 @@ def MyFetchView(request, *args, **kwargs):
         #the user password is stored in django-session (In django stores data on the server side and abstracts the sending
         # and receiving of cookies. The content of what the user actually gets is only the session_id.)
         password =  bytes(request.session['key'], 'utf-8')
-        content = Cryptographer.decrypted(content,password)
+        try:
+            content = Cryptographer.decrypted(content,password)
+        except InvalidToken:
+                return error_page(request, 'The key you previously entered doesn\'t match the one used when you uploaded this file. Please disconnect and enter the proper password.','file_list')
     return HttpResponse(content, content_type= mimetypes.guess_type(path, strict=True)[0] )
 
  

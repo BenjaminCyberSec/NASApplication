@@ -128,6 +128,13 @@ class Owner(models.Model):
     secret_key_given = models.BinaryField(max_length=130, null=True)#real length is 128
     wants_deletion = models.BooleanField(default=False)
     wants_download = models.BooleanField(default=False)
+
+    def reset(self):
+        self.date_key_given = None
+        self.secret_key_given = None
+        self.wants_deletion = False
+        self.wants_download = False
+        self.save()
     
 
 
