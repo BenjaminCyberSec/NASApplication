@@ -36,3 +36,31 @@ class Email(object):
         "s -> (s0,s1,s2,...sn-1), (sn,sn+1,sn+2,...s2n-1), (s2n,s2n+1,s2n+2,...s3n-1), ..."
         return zip(*[iter(iterable)]*n)
 
+    @classmethod
+    def activation(cls,email):
+        connection = mail.get_connection()   # Use default email connection
+        messages = [EmailMessage(
+            'Account activated! (NASApplication)',
+            'Your account was activated. (NASApplication)',
+            EMAIL,
+            [email],
+            [],#bbc
+        )]
+        connection.send_messages(messages)
+        connection.close()
+
+    @classmethod
+    def deactivation(cls,email):
+        connection = mail.get_connection()   # Use default email connection
+        messages = [EmailMessage(
+            'Account deactivated! (NASApplication)',
+            'Your account was deactivated. (NASApplication)',
+            EMAIL,
+            [email],
+            [],#bbc
+        )]
+        connection.send_messages(messages)
+        connection.close()
+
+   
+

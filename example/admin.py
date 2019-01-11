@@ -7,6 +7,8 @@ from django.shortcuts import render
 from django.contrib import messages
 from .forms import UserValidationSet
 from django.contrib import messages
+from .emails import Email
+
 
 class MyAdminSite(AdminSite):
 
@@ -24,8 +26,16 @@ class MyAdminSite(AdminSite):
         if request.method == 'POST':
             formset = UserValidationSet(request.POST)
             if formset.is_valid():
+                for form in formset:
+                    if('is_active' in form.cleaned_data and form.initial['is_active'] != form.cleaned_data['is_active']):
+                        if(form.cleaned_data['is_active']):
+                            Email.activation(form['email'])
+                        else: 
+                            Email.deactivation(form['email'])
+                
+                        
                 formset.save()
-                messages.info(request, 'Changes were saved! Come again.')
+                messages.info(request, 'Changes were saved! Email sent.')
             
             return HttpResponseRedirect(request.path_info)
     
@@ -44,9 +54,13 @@ class MyAdminSite(AdminSite):
     @receiver(pre_save, sender=User)
     def set_new_user_inactive(sender, instance, **kwargs):
         if instance._state.adding is True: #set as inactive if he is new
-            instance.is_active = False
-        #else
-            #do nothing if it's an update
+            if not instance.is_staff:
+                instance.is_active = False
+        else:
+            #if it's an update check if it's the activation to send email
+            print(kwargs)
+            print(instance.is_active)
+                
 
 
 
