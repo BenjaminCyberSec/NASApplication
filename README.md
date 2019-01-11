@@ -14,6 +14,9 @@ Install the requirements:
 pip install -r requirements.txt
 
 pip install git+https://github.com/blockstack/secret-sharing
+
+pip install django-registration-redux
+
 ```
 (The newest package of that library has not been pushed on the pip repository yet)
 
