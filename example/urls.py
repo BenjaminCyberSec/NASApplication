@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.urls import path, re_path
 from django.conf.urls import include, url
-#from django.contrib import admin
+from django.contrib import admin
 from example.admin import admin_site
 from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
@@ -14,7 +14,7 @@ from .views import (
 )
 #Import user owned files related views
 from .file_views import (
-     file_list, upload_file, delete_file,delete_directory,rename_file,rename_directory, 
+     file_list, upload_file, delete_file,delete_directory,rename_file,rename_directory,
      download_folder,new_directory,change_address,go_back
 )
 #Import shared files related views
@@ -46,6 +46,8 @@ urlpatterns = [
 
     path('encryptionkey/', EncryptionKey, name='encryption_key'),
 
+
+
     url(
         regex=r'^$',
         view=HomeView.as_view(),
@@ -74,8 +76,10 @@ urlpatterns = [
     url(r'', include(tf_urls)),
     url(r'', include(tf_twilio_urls)),
     url(r'', include('user_sessions.urls', 'user_sessions')),
-    url(r'^admin/', admin_site.urls),
-    #url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('registration.backends.admin_approval.urls')),
+
+
 
 ]
 

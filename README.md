@@ -14,6 +14,9 @@ Install the requirements:
 pip install -r requirements.txt
 
 pip install git+https://github.com/blockstack/secret-sharing
+
+pip install django-registration-redux
+
 ```
 (The newest package of that library has not been pushed on the pip repository yet)
 
@@ -26,9 +29,9 @@ e.g. with bash_profile
 
 ```bash
 
-export DEFF_FILE_SALT = "FILE_SALT"
-export DEFF_KEY_SALT = "KEY_SALT"
-export DEFF_KEY_PASSWORD = "KEY_PASSWORD"
+export DEFF_FILE_SALT="FILE_SALT"
+export DEFF_KEY_SALT="KEY_SALT"
+export DEFF_KEY_PASSWORD="KEY_PASSWORD"
 ```
 
 e.g. with Powershell

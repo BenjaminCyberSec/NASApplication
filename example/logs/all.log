@@ -1,0 +1,134 @@
+WARNING 2019-01-11 16:03:54,065 base 10852 23408 Session data corrupted
+INFO 2019-01-11 16:03:54,206 basehttp 10852 23408 "GET / HTTP/1.1" 200 12737
+INFO 2019-01-11 16:03:54,224 basehttp 10852 1456 "GET /static/debug_toolbar/img/ajax-loader.gif HTTP/1.1" 304 0
+INFO 2019-01-11 16:03:54,409 basehttp 10852 20088 "GET /static/debug_toolbar/img/djdt_vertical.png HTTP/1.1" 304 0
+WARNING 2019-01-11 16:03:54,441 base 10852 17056 Session data corrupted
+WARNING 2019-01-11 16:03:54,485 log 10852 17056 Not Found: /favicon.ico
+WARNING 2019-01-11 16:03:54,486 basehttp 10852 17056 "GET /favicon.ico HTTP/1.1" 404 16760
+WARNING 2019-01-11 16:03:56,721 base 10852 484 Session data corrupted
+INFO 2019-01-11 16:03:56,724 basehttp 10852 484 "GET /files/list/ HTTP/1.1" 302 0
+WARNING 2019-01-11 16:03:56,728 base 10852 2260 Session data corrupted
+INFO 2019-01-11 16:03:56,842 basehttp 10852 2260 "GET /account/login/?next=/files/list/ HTTP/1.1" 200 11705
+INFO 2019-01-11 16:03:59,465 basehttp 10852 17736 "POST /account/login/?next=/files/list/ HTTP/1.1" 200 11453
+INFO 2019-01-11 16:04:14,002 basehttp 10852 19436 "POST /account/login/?next=/files/list/ HTTP/1.1" 302 0
+INFO 2019-01-11 16:04:14,048 basehttp 10852 21760 "GET /files/list/ HTTP/1.1" 302 0
+INFO 2019-01-11 16:04:14,050 basehttp 10852 948 "GET /encryptionkey HTTP/1.1" 301 0
+INFO 2019-01-11 16:04:14,155 basehttp 10852 15256 "GET /encryptionkey/ HTTP/1.1" 200 12844
+INFO 2019-01-11 16:04:15,848 basehttp 10852 13352 "POST /encryptionkey/ HTTP/1.1" 302 0
+INFO 2019-01-11 16:04:15,967 basehttp 10852 12160 "GET /files/list/ HTTP/1.1" 200 17654
+INFO 2019-01-11 16:04:23,144 basehttp 10852 19932 "GET /fetch/media/files/users/jowa14/18H4TE63.png HTTP/1.1" 200 615472
+ERROR 2019-01-11 16:04:32,704 log 10852 16480 Internal Server Error: /files/download_folder/44/
+Traceback (most recent call last):
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 25, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\file_views.py", line 250, in download_folder
+    zf.write(content, file.name, compress_type=compression)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\zipfile.py", line 1710, in write
+    zinfo = ZipInfo.from_file(filename, arcname)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\zipfile.py", line 506, in from_file
+    st = os.stat(filename)
+ValueError: stat: embedded null character in path
+ERROR 2019-01-11 16:04:32,744 basehttp 10852 16480 "GET /files/download_folder/44/ HTTP/1.1" 500 116541
+ERROR 2019-01-11 16:06:54,310 log 19824 6968 Internal Server Error: /files/download_folder/44/
+Traceback (most recent call last):
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 25, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\file_views.py", line 257, in download_folder
+    return HttpResponse(zf, content_type= mimetypes.guess_type(path, strict=True)[0] )
+NameError: name 'path' is not defined
+ERROR 2019-01-11 16:06:54,358 basehttp 19824 6968 "GET /files/download_folder/44/ HTTP/1.1" 500 99049
+INFO 2019-01-11 16:07:58,020 basehttp 3236 6968 "GET /files/download_folder/44/ HTTP/1.1" 200 26
+INFO 2019-01-11 16:08:55,883 basehttp 10036 21232 "GET /files/download_folder/44/ HTTP/1.1" 200 26
+ERROR 2019-01-11 16:14:26,709 log 24296 18632 Internal Server Error: /files/download_folder/44/
+Traceback (most recent call last):
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 25, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\file_views.py", line 257, in download_folder
+    zip_name = zf.filename()
+TypeError: 'str' object is not callable
+ERROR 2019-01-11 16:14:26,753 basehttp 24296 18632 "GET /files/download_folder/44/ HTTP/1.1" 500 99030
+ERROR 2019-01-11 16:14:45,006 log 15596 7596 Internal Server Error: /files/download_folder/44/
+Traceback (most recent call last):
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 25, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\file_views.py", line 257, in download_folder
+    zip_name = zf.filename()
+TypeError: 'str' object is not callable
+ERROR 2019-01-11 16:14:45,052 basehttp 15596 7596 "GET /files/download_folder/44/ HTTP/1.1" 500 99261
+INFO 2019-01-11 16:14:59,096 basehttp 23564 23924 "GET /files/download_folder/44/ HTTP/1.1" 200 1845187
+ERROR 2019-01-11 16:22:11,824 log 18856 23176 Internal Server Error: /files/download_folder/44/
+Traceback (most recent call last):
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 25, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\file_views.py", line 226, in download_folder
+    zf.setpassword(str.encode(password))
+TypeError: descriptor 'encode' requires a 'str' object but received a 'bytes'
+ERROR 2019-01-11 16:22:11,870 basehttp 18856 23176 "GET /files/download_folder/44/ HTTP/1.1" 500 94017
+INFO 2019-01-11 16:22:30,045 basehttp 5488 15596 "GET /files/download_folder/44/ HTTP/1.1" 200 1845187
+INFO 2019-01-11 18:21:07,759 basehttp 18912 14424 "GET / HTTP/1.1" 200 13005
+INFO 2019-01-11 18:21:10,006 basehttp 18912 7648 "GET /account/logout/ HTTP/1.1" 302 0
+INFO 2019-01-11 18:21:10,053 basehttp 18912 23660 "GET / HTTP/1.1" 200 12737
+INFO 2019-01-11 18:21:11,015 basehttp 18912 11592 "GET /account/login/ HTTP/1.1" 200 11705
+INFO 2019-01-11 18:21:12,833 basehttp 18912 11400 "POST /account/login/ HTTP/1.1" 200 11453
+INFO 2019-01-11 18:21:30,079 basehttp 18912 16016 "POST /account/login/ HTTP/1.1" 302 0
+INFO 2019-01-11 18:21:30,240 basehttp 18912 23904 "GET /account/two_factor/ HTTP/1.1" 200 12876
+INFO 2019-01-11 18:21:32,202 basehttp 18912 9824 "GET /files/list/ HTTP/1.1" 302 0
+INFO 2019-01-11 18:21:32,205 basehttp 18912 9552 "GET /encryptionkey HTTP/1.1" 301 0
+INFO 2019-01-11 18:21:32,285 basehttp 18912 17244 "GET /encryptionkey/ HTTP/1.1" 200 12844
+INFO 2019-01-11 18:21:34,044 basehttp 18912 8584 "POST /encryptionkey/ HTTP/1.1" 302 0
+INFO 2019-01-11 18:21:34,162 basehttp 18912 12504 "GET /files/list/ HTTP/1.1" 200 17654
+INFO 2019-01-11 18:21:36,760 basehttp 18912 24564 "GET /fetch/media/files/users/jowa14/08H4TE63.png HTTP/1.1" 200 615472
+INFO 2019-01-11 18:21:41,092 basehttp 18912 13580 "GET /fetch/media/files/users/jowa14/08H4TE63.png HTTP/1.1" 200 615472
+INFO 2019-01-11 18:21:57,472 basehttp 18912 14036 "GET /files/download_folder/44/ HTTP/1.1" 200 1845187
+INFO 2019-01-11 18:24:28,583 basehttp 11384 23176 "GET /files/download_folder/44/ HTTP/1.1" 200 1845187
+INFO 2019-01-11 18:25:06,171 basehttp 6328 13016 "GET /files/download_folder/44/ HTTP/1.1" 200 1845187

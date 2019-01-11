@@ -1,5 +1,6 @@
 import os
 
+
 DEBUG = True
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -95,6 +96,7 @@ INSTALLED_APPS = (
     'django_otp.plugins.otp_totp',
     'two_factor',
     'example',
+    'registration',
 
     'debug_toolbar',
     'bootstrapform',
@@ -142,19 +144,29 @@ LOGGING = {
 
 TWO_FACTOR_CALL_GATEWAY = 'example.gateways.Messages'
 TWO_FACTOR_SMS_GATEWAY = 'example.gateways.Messages'
+
+
+
+#PHONENUMBER_DEFAULT_REGION = 'BE'
+
 PHONENUMBER_DEFAULT_REGION = 'BE'
 
 SESSION_ENGINE = 'user_sessions.backends.db'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL = 'noreply@nasapp.be'
-#EMAIL_HOST 
+#EMAIL_HOST
 #EMAIL_PORT
-#EMAIL_HOST_USER 
+#EMAIL_HOST_USER
 #EMAIL_HOST_PASSWORD
 #EMAIL_USE_TLS
-#EMAIL_USE_SSL 
+#EMAIL_USE_SSL
 
+#Django-registrationr-edux settings
+
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = False
+REGISTRATION_ADMINS = ['niwei.wang@gmail.com','niwei.wang@outlook.com']
 
 
 # Static files (CSS, JavaScript, Images)
