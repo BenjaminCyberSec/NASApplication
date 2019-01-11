@@ -26,9 +26,9 @@ e.g. with bash_profile
 
 ```bash
 
-export DEFF_FILE_SALT = "FILE_SALT"
-export DEFF_KEY_SALT = "KEY_SALT"
-export DEFF_KEY_PASSWORD = "KEY_PASSWORD"
+export DEFF_FILE_SALT="FILE_SALT"
+export DEFF_KEY_SALT="KEY_SALT"
+export DEFF_KEY_PASSWORD="KEY_PASSWORD"
 ```
 
 e.g. with Powershell

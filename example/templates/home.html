@@ -10,11 +10,6 @@
       <code>django-two-factor-auth</code> powered NAS solution. Use this example to get an
     understanding of what the app can do for you.{% endblocktrans %}</p>
 
-  <h4>{% trans "Please verify your settings" %}</h4>
-  <p>{% blocktrans %}Have you provided your Twilio settings in the
-      <code>settings_private.py</code> file? By doing so, the example app will
-      be able to call and text you to verify your authentication tokens.
-      Otherwise, the tokens will be shown on the screen.{% endblocktrans %}</p>
 
   {% url 'registration' as reg_url %}
   {% url 'two_factor:login' as login_url %}
