@@ -1,6 +1,6 @@
 from django import forms
-from django.forms import formset_factory
-from django.contrib.auth.forms import UserCreationForm
+from django.forms import formset_factory,modelformset_factory
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from .models import File
 
@@ -38,6 +38,9 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2', )
+
+
+UserValidationSet = modelformset_factory(User, fields=('email','is_active'))
      
 
 

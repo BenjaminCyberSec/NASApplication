@@ -49,6 +49,12 @@ Apply the migrations:
 python manage.py migrate --run-syncdb
 ```
 
+Create an admin account (you will use it to confirm users)
+
+```bash
+python manage.py createsuperuser
+```
+
 
 Finally, run the development server:
 
@@ -56,6 +62,15 @@ Finally, run the development server:
 python manage.py runserver
 ```
 
-Note:
+Localhost: http://127.0.0.1:8000/ (access user pages only)
+
+
+Admin url: http://127.0.0.1:8000/admin/registration_validation/ (access admin pages only - default django option have been set unavaible)
+
+Note1:
+As long as the user has not been validated, the connection page will output the credentials are unvalid.
+
+
+Note2:
 When the project is run locally, django will print mails (use to transmit keys of shared files) on the console.
 In production the settings file has to be edited to provide the host, the port, the credentials as well as tls and ssl like explained in the rapport

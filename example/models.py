@@ -16,6 +16,7 @@ except ImportError:
     from urllib import quote as url_encode  # Python 2
 from django.contrib.auth.models import User
 from .settings import MEDIA_URL
+from datetime import datetime
 
 
 
@@ -111,6 +112,8 @@ class File(AbstractBaseFile):
         self.name = new_name
         self.save()
 
+    
+
 #The SharedFile model is used to store shared files
 class SharedFile(AbstractBaseFile):
     fileType = models.CharField(max_length=100)
@@ -127,6 +130,42 @@ class SharedFile(AbstractBaseFile):
     def save(self, *args, **kwargs):
         self.url = "%sshared_files/%s" % (MEDIA_URL,self.name)
         super(SharedFile, self).save(*args, **kwargs)
+
+    #The following methods upload a list of shared files and create the corresponding owners
+    #It takes a owners parameter wich is a dictionary owner : [], it fills the list with couple file keys
+    @classmethod
+    def upload_list(cls, file_list,owners,minimum_validation,size):
+        for data in file_list:
+            data.name = cls.find_name(data.name)
+            key = Cryptographer.generateKey()
+            TemporaryKeyHandler.addSharedFile(key,data.name)
+            s=Cryptographer.shareKey(key, minimum_validation,size)
+            i=0
+            for k,v in owners.items():
+                v.append(data.name)
+                v.append(s[i])
+                i+=1
+            sh = SharedFile(name =  data.name,
+            size = data.size/1000,
+            modification_date = datetime.now(),
+            file = data,
+            nb_owners = size,
+            minimum_validation = minimum_validation)
+            sh.save()
+            for user in owners.keys():
+                Owner(user= user,shared_file=sh ).save()
+        return owners
+    
+    @classmethod
+    def find_name(cls,name):
+        i = 0
+        while len(SharedFile.objects.filter(name =  name)) != 0:
+            if i > 0:
+                name = name[1:]
+            name = str(i)+name
+            i += 1
+        return name
+
 
 #The Owner model is the model use to make a custom m to n relationship between users and sharedfiles 
 # and store the (encrypted) keys of the threshold algorythm as they come 
@@ -146,6 +185,21 @@ class Owner(models.Model):
         self.wants_deletion = False
         self.wants_download = False
         self.save()
+
+    def setKey(self,password):
+        self.date_key_given = datetime.now()
+        self.secret_key_given = Cryptographer.encryptKeyPart(password)
+        self.save()
+
+    def grant_download(self):
+        self.wants_download = True
+        self.save()
+
+    def grant_deletion(self):
+        self.wants_deletion = True
+        self.save()
+
+    
     
 
 
