@@ -218,60 +218,37 @@ def download_folder(request, pk):
         my_regex = r"^" + re.escape(full_address) + r".*"
         subdirectory_files = File.objects.filter(address__regex = my_regex)
         #print(len(subdirectory_files))
-        """
-        file_paths = []
-        for file in subdirectory_files:
-            if file.category == "File" :
-                files.append(Path(settings.SERVER_PATH + file.file.url))
-        print(file_paths)
-        """
         compression = zipfile.ZIP_DEFLATED
         zip_filename = root_file.name + ".zip"
         print(zip_filename)
         zf = zipfile.ZipFile(zip_filename, "w") 
-
+        password =  bytes(request.session['key'], 'utf-8')
         try:
-            # Add file to the zip file
-            # first parameter file to zip, second filename in zip
             for file in subdirectory_files:
                 if file.category == "File" :
-                    print(file.file.url)
+                    #print(file.file.url)
                     file_url =  file.file.url.split("/")
                     file_url = file_url[2:]
                     file_url = "/".join(file_url)
-                    print(file_url)
-                    zf.write(Path(settings.SERVER_PATH + file_url), file.name, compress_type=compression)
+                    #print(file_url)
+                    with open(Path(settings.SERVER_PATH + file_url), "rb") as f:
+                        content = f.read()
+                    try:
+                        content = Cryptographer.decrypted(content,password)
+                    except InvalidToken:
+                        return error_page(request, 'The key you previously entered doesn\'t match the one used when you uploaded this file. Please disconnect and enter the proper password.','file_list')
+                    
+                    zf.writestr(file.name,content)
 
         except FileNotFoundError:
             print("An error occurred")
         finally:
             # Don't forget to close the file!
             zf.close()
-
-        """
-        for file_url in file_urls:
-            file_url = "http://127.0.0.1:8000" + file_url
-            file_response = requests.get(file_url)  
-            print(file_response)
-
-            #if file_response.status_code == 200:
-             #   fdir, fname = os.path.split(filename)
-              #  zip_path = os.path.join(zip_subdir, fname)
-               # zf.write(filename, zip_path)
-
-        
-        full_path = Path(settings.SERVER_PATH + path)
-        root_file = File.objects.get(pk=pk)
-        try:
-            root_file = File.objects.get(pk=pk)
-        except ObjectDoesNotExist:
-            return error_page(request,'The folder has already been deleted', 'file_list')
-        root_file.address
-        full_address = root_file.address + "/" + root_file.name
-        my_regex = r"^" + re.escape(full_address) + r".*"
-        subdirectory_files = File.objects.filter(address__regex = my_regex)
-        for file in subdirectory_files:
-            file.delete()
-        root_file.delete()
-        """
+        zip_name = zf.filename
+        print(zip_filename)
+        f = open(zip_filename, "rb")
+        response = HttpResponse(f, content_type='application/x-zip')
+        response['Content-Disposition'] = 'attachment; filename="%s"' % zip_name
+        return response
     return redirect('file_list')
