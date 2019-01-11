@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.urls import path, re_path
 from django.conf.urls import include, url
-#from django.contrib import admin
+from django.contrib import admin
 from example.admin import admin_site
 from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
