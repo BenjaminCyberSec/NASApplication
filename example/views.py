@@ -98,7 +98,7 @@ def MyFetchView(request, *args, **kwargs):
     if not path:
         raise Http404
 
-    full_path = Path(settings.SERVER_PATH + path)
+    full_path = Path(settings.PROJECT_PATH + path)
 
     if not os.path.exists(full_path): #malicious or deleted
         raise Http404

@@ -7,6 +7,7 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 MEDIA_URL = '/media/'
 
 SERVER_PATH = os.getcwd() + '/example/'
+
 #PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -42,7 +43,9 @@ AUTHENTICATION_BACKENDS = (
 TIME_ZONE = 'Europe/Brussels'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'DO NOT USE THIS KEY!'
+#This key is required by django
+#CHANGE THIS IN PROD
+SECRET_KEY = 'NASr(-7kmnxko$t+odw4yzu6u^$*~-7%h0w@7t_(_r@l75_b&6*&gasjmCYbER'
 
 MIDDLEWARE = (
     'django.middleware.common.CommonMiddleware',
@@ -120,7 +123,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': SERVER_PATH + '/logs/all.log',
+            'filename': PROJECT_PATH + '/logs/all.log',
             'formatter': 'verbose'
         },
         'console': {
