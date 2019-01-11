@@ -8,6 +8,7 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 MEDIA_URL = '/media/'
 
 SERVER_PATH = os.getcwd() + '/example/'
+
 #PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -43,7 +44,9 @@ AUTHENTICATION_BACKENDS = (
 TIME_ZONE = 'Europe/Brussels'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'DO NOT USE THIS KEY!'
+#This key is required by django
+#CHANGE THIS IN PROD
+SECRET_KEY = 'NASr(-7kmnxko$t+odw4yzu6u^$*~-7%h0w@7t_(_r@l75_b&6*&gasjmCYbER'
 
 MIDDLEWARE = (
     'django.middleware.common.CommonMiddleware',
@@ -112,23 +115,27 @@ INTERNAL_IPS = ('127.0.0.1',)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': PROJECT_PATH + '/logs/all.log',
+            'formatter': 'verbose'
+        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
         },
-        #'file': {
-        #    'class': 'logging.FileHandler',
-        #    'filename': SERVER_PATH + '/logs/all.log',
-        #},
     },
     'loggers': {
-        #'django': {
-        #    'handlers': ['file'],
-        #    'propagate': True,
-        #},
-        'two_factor': {
-            'handlers': ['console'],
+        'django': {
+            'handlers': ['console', 'file'],
             'level': 'INFO',
         }
     }
