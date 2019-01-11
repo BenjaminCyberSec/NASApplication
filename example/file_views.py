@@ -34,6 +34,8 @@ from .message_handler import error, error_page
 from django.core.exceptions import ObjectDoesNotExist
 import zipfile
 import io 
+import os
+from threading import Timer
 
 
 ###### Methods relatives to files own by one user ######
@@ -210,6 +212,12 @@ def delete_directory(request, pk):
 @key_required
 @file_address
 def download_folder(request, pk):
+
+    def delete_zip_server_side(zip_name):
+        if os.path.exists(zip_name):
+            os.remove(zip_name)
+        else:
+            print(zip_name + " was not found")
     #file.file.url
     #print("biatch")
     if request.method == 'GET':
@@ -220,7 +228,8 @@ def download_folder(request, pk):
         #print(len(subdirectory_files))
         compression = zipfile.ZIP_DEFLATED
         zip_filename = root_file.name + ".zip"
-        print(zip_filename)
+        #print(zip_filename)
+        zip_deletion = Timer(5,delete_zip_server_side,args=(zip_filename,))
         zf = zipfile.ZipFile(zip_filename, "w") 
         password =  bytes(request.session['key'], 'utf-8')
         try:
@@ -250,5 +259,7 @@ def download_folder(request, pk):
         f = open(zip_filename, "rb")
         response = HttpResponse(f, content_type='application/x-zip')
         response['Content-Disposition'] = 'attachment; filename="%s"' % zip_name
+        #zip_deletion will delete the local zip file in 5 second.
+        zip_deletion.start()
         return response
     return redirect('file_list')

@@ -96,3 +96,39 @@ Traceback (most recent call last):
 TypeError: 'str' object is not callable
 ERROR 2019-01-11 16:14:45,052 basehttp 15596 7596 "GET /files/download_folder/44/ HTTP/1.1" 500 99261
 INFO 2019-01-11 16:14:59,096 basehttp 23564 23924 "GET /files/download_folder/44/ HTTP/1.1" 200 1845187
+ERROR 2019-01-11 16:22:11,824 log 18856 23176 Internal Server Error: /files/download_folder/44/
+Traceback (most recent call last):
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\core\handlers\base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\jolan\AppData\Local\Programs\Python\Python37-32\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 16, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\decorators.py", line 25, in wrap
+    return function(request, *args, **kwargs)
+  File "C:\Users\jolan\Documents\NASApplication\example\file_views.py", line 226, in download_folder
+    zf.setpassword(str.encode(password))
+TypeError: descriptor 'encode' requires a 'str' object but received a 'bytes'
+ERROR 2019-01-11 16:22:11,870 basehttp 18856 23176 "GET /files/download_folder/44/ HTTP/1.1" 500 94017
+INFO 2019-01-11 16:22:30,045 basehttp 5488 15596 "GET /files/download_folder/44/ HTTP/1.1" 200 1845187
+INFO 2019-01-11 18:21:07,759 basehttp 18912 14424 "GET / HTTP/1.1" 200 13005
+INFO 2019-01-11 18:21:10,006 basehttp 18912 7648 "GET /account/logout/ HTTP/1.1" 302 0
+INFO 2019-01-11 18:21:10,053 basehttp 18912 23660 "GET / HTTP/1.1" 200 12737
+INFO 2019-01-11 18:21:11,015 basehttp 18912 11592 "GET /account/login/ HTTP/1.1" 200 11705
+INFO 2019-01-11 18:21:12,833 basehttp 18912 11400 "POST /account/login/ HTTP/1.1" 200 11453
+INFO 2019-01-11 18:21:30,079 basehttp 18912 16016 "POST /account/login/ HTTP/1.1" 302 0
+INFO 2019-01-11 18:21:30,240 basehttp 18912 23904 "GET /account/two_factor/ HTTP/1.1" 200 12876
+INFO 2019-01-11 18:21:32,202 basehttp 18912 9824 "GET /files/list/ HTTP/1.1" 302 0
+INFO 2019-01-11 18:21:32,205 basehttp 18912 9552 "GET /encryptionkey HTTP/1.1" 301 0
+INFO 2019-01-11 18:21:32,285 basehttp 18912 17244 "GET /encryptionkey/ HTTP/1.1" 200 12844
+INFO 2019-01-11 18:21:34,044 basehttp 18912 8584 "POST /encryptionkey/ HTTP/1.1" 302 0
+INFO 2019-01-11 18:21:34,162 basehttp 18912 12504 "GET /files/list/ HTTP/1.1" 200 17654
+INFO 2019-01-11 18:21:36,760 basehttp 18912 24564 "GET /fetch/media/files/users/jowa14/08H4TE63.png HTTP/1.1" 200 615472
+INFO 2019-01-11 18:21:41,092 basehttp 18912 13580 "GET /fetch/media/files/users/jowa14/08H4TE63.png HTTP/1.1" 200 615472
+INFO 2019-01-11 18:21:57,472 basehttp 18912 14036 "GET /files/download_folder/44/ HTTP/1.1" 200 1845187
+INFO 2019-01-11 18:24:28,583 basehttp 11384 23176 "GET /files/download_folder/44/ HTTP/1.1" 200 1845187
+INFO 2019-01-11 18:25:06,171 basehttp 6328 13016 "GET /files/download_folder/44/ HTTP/1.1" 200 1845187
