@@ -18,7 +18,7 @@ pip install git+https://github.com/blockstack/secret-sharing
 (The newest package of that library has not been pushed on the pip repository yet)
 
 ```bash
-cd NASApplication/example
+cd NASApplication
 ```
 
 Set the servers's secret salt as environement variable
@@ -68,7 +68,7 @@ Localhost: http://127.0.0.1:8000/ (access user pages only)
 Admin url: http://127.0.0.1:8000/admin/registration_validation/ (access admin pages only - default django option have been set unavaible)
 
 Note1:
-As long as the user has not been validated, the connection page will output the credentials are unvalid.
+As long as the user has not been validated, the connection page will output the credentials are unvalid. Superuser account cannot use the website, their credentials only workin for admin section.
 
 
 Note2:
