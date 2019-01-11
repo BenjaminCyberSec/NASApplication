@@ -76,7 +76,7 @@ urlpatterns = [
     url(r'', include(tf_urls)),
     url(r'', include(tf_twilio_urls)),
     url(r'', include('user_sessions.urls', 'user_sessions')),
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin_site.urls),
     url(r'^accounts/', include('registration.backends.admin_approval.urls')),
 
 
