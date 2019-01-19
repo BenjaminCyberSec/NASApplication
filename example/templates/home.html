@@ -7,8 +7,7 @@
 {% block content %}
   <h1>{% blocktrans %}Network Attached Storage <small> with multiuser encryption sharing</small>{% endblocktrans %}</h1>
   <p>{% blocktrans %}Welcome to the
-      <code>django-two-factor-auth</code> powered NAS solution. Use this example to get an
-    understanding of what the app can do for you.{% endblocktrans %}</p>
+      <code>django-two-factor-auth</code> powered NAS solution. {% endblocktrans %}</p>
 
 
   {% url 'registration' as reg_url %}
@@ -20,7 +19,7 @@
   {% url 'upload_file' as shared_url %}
 
 
-  <h4>{% trans "Next steps:" %}</h4>
+  <h4>{% trans "Quick Start:" %}</h4>
   <ol>
     <li>{% blocktrans %}Start by <a href="{{ reg_url }}">registering</a> an
       account.{% endblocktrans %}</li>
@@ -32,6 +31,6 @@
       <a href="{{ login_url }}">login</a> once more to your account to see
       two-factor authentication at work.{% endblocktrans %}</li>
       <li>{% blocktrans %}Finally try the <a href="{{ single_url }}">single file upload</a>  and
-        <a href="{{ shared_url }}">shared file management</a> function.{% endblocktrans %}</li>
+        <a href="{{ shared_url }}">shared file management</a> functions.{% endblocktrans %}</li>
     </ol>
 {% endblock %}
