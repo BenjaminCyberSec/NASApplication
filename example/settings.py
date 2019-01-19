@@ -153,20 +153,36 @@ PHONENUMBER_DEFAULT_REGION = 'BE'
 
 SESSION_ENGINE = 'user_sessions.backends.db'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 EMAIL = 'noreply@nasapp.be'
-#EMAIL_HOST
-#EMAIL_PORT
-#EMAIL_HOST_USER
-#EMAIL_HOST_PASSWORD
-#EMAIL_USE_TLS
-#EMAIL_USE_SSL
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'smtpnas19@gmail.com'
+EMAIL_HOST_PASSWORD = 'Smtp_2019'
+EMAIL_USE_TLS = True
+# EMAIL_USE_SSL
 
 #Django-registrationr-edux settings
 
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = False
-REGISTRATION_ADMINS = ['niwei.wang@gmail.com','niwei.wang@outlook.com']
+#REGISTRATION_ADMINS = ['niwei.wang@gmail.com','niwei.wang@outlook.com']
+
+
+ADMINS = (
+    ('admin1', 'niwei.wang@gmail.com'),
+    ('admin2', 'niwei.wang@outlook.com'),
+)
+
+
+REGISTRATION_ADMINS = (
+    ('admin1', 'niwei.wang@gmail.com'),
+    ('admin2', 'niwei.wang@outlook.com'),
+)
+
 
 
 # Static files (CSS, JavaScript, Images)
