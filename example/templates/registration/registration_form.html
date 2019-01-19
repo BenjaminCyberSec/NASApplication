@@ -1,7 +1,7 @@
 {% extends "_base.html" %}
 
 {% load i18n %}
-
+{% load crispy_forms_tags %}
 
 {% block title %}{% trans "Register for an account" %}{% endblock %}
 
@@ -10,7 +10,7 @@
 <h1> Register Now</h1>
 <form method="post" action="">
     {% csrf_token %}
-    {{form|crispy}}
+  {{ form|crispy }}
     <input class='btn btn-primary' type="submit" value="{% trans 'Submit' %}" />
 </form>
 {% endblock %}
