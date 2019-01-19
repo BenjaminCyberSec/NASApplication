@@ -21,7 +21,7 @@
     <p><a href="{% url 'two_factor:backup_tokens' %}"
           class="btn btn-info">{% trans "Show Codes" %}</a></p>
 
-    <h3>{% trans "Disable Two-Factor Authentication" %}</h3>
+    <h2>{% trans "Disable Two-Factor Authentication" %}</h2>
     <p>{% blocktrans %}However we strongly discourage you to do so, you can
       also disable two-factor authentication for your account.{% endblocktrans %}</p>
     <p><a class="btn btn-default" href="{% url 'two_factor:disable' %}">
@@ -34,4 +34,8 @@
       {% trans "Enable Two-Factor Authentication" %}</a>
     </p>
   {% endif %}
+
+  <h2>{% trans "Change Password" %}</h2>
+  <p>{% trans "Want to change your password?" %} <a href="{% url 'auth_password_change' %}">{% trans "Change it" %}</a>.</p>
+
 {% endblock %}
