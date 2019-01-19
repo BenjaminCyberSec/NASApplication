@@ -6,17 +6,16 @@
 
 {% block content %}
   <h1>{% blocktrans %}Network Attached Storage <small> with multiuser encryption sharing</small>{% endblocktrans %}</h1>
-  <p>{% blocktrans %}Welcome to the
-      <code>django-two-factor-auth</code> powered NAS solution. {% endblocktrans %}</p>
+  <p>{% blocktrans %}Welcome to the NAS solution. {% endblocktrans %}</p>
 
 
-  {% url 'registration' as reg_url %}
+  {% url 'registration_register' as reg_url %}
   {% url 'two_factor:login' as login_url %}
   {% url 'two_factor:setup' as setup_url %}
   {% url 'logout' as logout_url %}
   {% url 'secret' as secret_url %}
   {% url 'upload_file' as single_url %}
-  {% url 'upload_file' as shared_url %}
+  {% url 'upload_shared_file' as shared_url %}
 
 
   <h4>{% trans "Quick Start:" %}</h4>
