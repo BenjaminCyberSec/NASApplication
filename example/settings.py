@@ -97,10 +97,8 @@ INSTALLED_APPS = (
     'two_factor',
     'example',
     'registration',
-
     'debug_toolbar',
     'bootstrapform',
-
     'crispy_forms',
 )
 
@@ -152,6 +150,7 @@ TWO_FACTOR_SMS_GATEWAY = 'example.gateways.Messages'
 PHONENUMBER_DEFAULT_REGION = 'BE'
 
 SESSION_ENGINE = 'user_sessions.backends.db'
+SESSION_COOKIE_AGE = 3600
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
