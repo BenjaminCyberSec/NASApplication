@@ -1,5 +1,12 @@
 
 
+
+## System Requirements
+
+- Ubuntu 18.04 LTS (Or other Debian based Linux distro that supports Python version 3.6)
+- Python 3.6
+
+
 ## Running the Project Locally
 
 First, clone the repository to your local machine:
@@ -62,15 +69,18 @@ Finally, run the development server:
 python manage.py runserver
 ```
 
+**The application access parameters:**
+
+
 Localhost: http://127.0.0.1:8000/ (access user pages only)
 
 
-Admin url: http://127.0.0.1:8000/admin/registration_validation/ (access admin pages only - default django option have been set unavaible)
+Admin url: http://127.0.0.1:8000/admin/ (Default django admin interface)
 
 Note1:
-As long as the user has not been validated, the connection page will output the credentials are unvalid. Superuser account cannot use the website, their credentials only workin for admin section.
-
+As long as a user has not been validated, the connection page will output the credentials are invalid.
 
 Note2:
-When the project is run locally, django will print mails (use to transmit keys of shared files) on the console.
-In production the settings file has to be edited to provide the host, the port, the credentials as well as tls and ssl like explained in the rapport
+When the project runs locally, Django will print email text (used to activate user and to transmit keys of shared files) to the console. In production the settings file may be edited to provide the host, the port, the credentials as well as TLS and SSL.
+
+In production, the value of “SECRET_KEY” in the file settings.py should be changed. Its usage is made mandatory by Django as it uses it to secure signed data.
