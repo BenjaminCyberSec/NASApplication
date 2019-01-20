@@ -13,6 +13,7 @@ First, clone the repository to your local machine:
 
 ```bash
 git clone https://github.com/BenjaminCyberSec/NASApplication
+cd NASApplication
 ```
 
 Install the requirements:
@@ -23,10 +24,6 @@ pip install --upgrade git+https://github.com/blockstack/secret-sharing
 
 ```
 (The newest package of that library has not been pushed on the pip repository yet)
-
-```bash
-cd NASApplication
-```
 
 Set the servers's secret salt as environement variable
 e.g. with bash_profile
