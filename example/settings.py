@@ -152,16 +152,16 @@ PHONENUMBER_DEFAULT_REGION = 'BE'
 SESSION_ENGINE = 'user_sessions.backends.db'
 SESSION_COOKIE_AGE = 3600
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL = 'noreply@nasapp.be'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'smtpnas19@gmail.com'
-EMAIL_HOST_PASSWORD = 'Smtp_2019'
-EMAIL_USE_TLS = True
+#EMAIL_HOST
+#EMAIL_PORT
+#EMAIL_HOST_USER
+#EMAIL_HOST_PASSWORD
+#EMAIL_USE_TLS
 # EMAIL_USE_SSL
 
 #Django-registrationr-edux settings
