@@ -218,28 +218,22 @@ def download_folder(request, pk):
             os.remove(zip_name)
         else:
             print(zip_name + " was not found")
-    #file.file.url
-    #print("biatch")
     if request.method == 'GET':
         root_file = File.objects.get(pk=pk)
         full_address = root_file.address + "/" + root_file.name
         my_regex = r"^" + re.escape(full_address) + r".*"
         subdirectory_files = File.objects.filter(address__regex = my_regex)
-        #print(len(subdirectory_files))
         compression = zipfile.ZIP_DEFLATED
         zip_filename = root_file.name + ".zip"
-        #print(zip_filename)
         zip_deletion = Timer(5,delete_zip_server_side,args=(zip_filename,))
         zf = zipfile.ZipFile(zip_filename, "w") 
         password =  bytes(request.session['key'], 'utf-8')
         try:
             for file in subdirectory_files:
                 if file.category == "File" :
-                    #print(file.file.url)
                     file_url =  file.file.url.split("/")
                     file_url = file_url[2:]
                     file_url = "/".join(file_url)
-                    #print(file_url)
                     with open(Path(settings.SERVER_PATH + file_url), "rb") as f:
                         content = f.read()
                     try:
